@@ -1637,6 +1637,10 @@
         /* Mobile Menu Toggle */
         .mobile-menu-toggle {
             display: none;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
             background: none;
             border: none;
             cursor: pointer;
@@ -1644,6 +1648,7 @@
         }
         
         .mobile-menu-icon {
+            display: block;
             width: 24px;
             height: 2px;
             background: white;
@@ -1655,6 +1660,7 @@
         .mobile-menu-icon::after {
             content: '';
             position: absolute;
+            left: 0;
             width: 24px;
             height: 2px;
             background: white;
@@ -1874,6 +1880,9 @@
             
             .mobile-menu-toggle {
                 display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
             }
             
             .nav {
@@ -2789,30 +2798,33 @@
                         <p class="body">Paris, France</p>
                     </div>
                 </div>
-                <form class="form">
+                <!-- Contact form sends to obzrve@gmail.com via Web3Forms. Get your free key at https://web3forms.com (use obzrve@gmail.com) and set CONTACT_ACCESS_KEY in the script below. -->
+                <form class="form" id="contact-form">
+                    <input type="hidden" name="access_key" id="contact-access-key" value="">
                     <div class="field">
                         <label class="field-label" for="contact-name">Name</label>
-                        <input type="text" id="contact-name" class="text-input" placeholder="Your name">
+                        <input type="text" id="contact-name" name="name" class="text-input" placeholder="Your name" required>
                     </div>
                     <div class="field">
                         <label class="field-label" for="contact-email">Email</label>
-                        <input type="email" id="contact-email" class="text-input" placeholder="your@email.com">
+                        <input type="email" id="contact-email" name="email" class="text-input" placeholder="your@email.com" required>
                     </div>
                     <div class="field">
                         <label class="field-label" for="contact-service">Service</label>
-                        <select id="contact-service" class="select">
-                            <option>Select a service</option>
-                            <option>Product Photography</option>
-                            <option>Wedding Photography</option>
-                            <option>Event Photography</option>
-                            <option>Portrait Photography</option>
+                        <select id="contact-service" name="service" class="select">
+                            <option value="">Select a service</option>
+                            <option value="Product Photography">Product Photography</option>
+                            <option value="Wedding Photography">Wedding Photography</option>
+                            <option value="Event Photography">Event Photography</option>
+                            <option value="Portrait Photography">Portrait Photography</option>
                         </select>
                     </div>
                     <div class="field">
                         <label class="field-label" for="contact-message">Message</label>
-                        <textarea id="contact-message" class="textarea" placeholder="Tell us about your project..."></textarea>
+                        <textarea id="contact-message" name="message" class="textarea" placeholder="Tell us about your project..." required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                    <div class="field" id="contact-form-status" style="display: none;"></div>
+                    <button type="submit" class="btn btn-primary btn-lg" id="contact-submit-btn">Send Message</button>
                 </form>
             </div>
         </div>
@@ -3351,6 +3363,49 @@
         window.addEventListener('hashchange', () => {
             scrollToHash(window.location.hash, { behavior: 'smooth' });
         });
+
+        // Contact form: sends to obzrve@gmail.com via Web3Forms (get your free key at https://web3forms.com)
+        (function() {
+            var CONTACT_ACCESS_KEY = '14c66beb-f527-4d37-8bb1-6b965af34545';
+            var form = document.getElementById('contact-form');
+            var statusEl = document.getElementById('contact-form-status');
+            var submitBtn = document.getElementById('contact-submit-btn');
+            if (!form) return;
+            var keyEl = document.getElementById('contact-access-key');
+            if (keyEl) keyEl.value = CONTACT_ACCESS_KEY;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!CONTACT_ACCESS_KEY || CONTACT_ACCESS_KEY === '14c66beb-f527-4d37-8bb1-6b965af34545Y') {
+                    statusEl.style.display = 'block';
+                    statusEl.innerHTML = '<span class="field-error">Setup: Get a free key at <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> for obzrve@gmail.com and replace YOUR_WEB3FORMS_ACCESS_KEY in this file.</span>';
+                    return;
+                }
+                submitBtn.disabled = true;
+                statusEl.style.display = 'block';
+                statusEl.className = 'field';
+                statusEl.innerHTML = 'Sending…';
+                var body = new FormData(form);
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: body
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        statusEl.innerHTML = '<span style="color: var(--success, green);">Message sent. We\'ll get back to you soon.</span>';
+                        form.reset();
+                    } else {
+                        statusEl.innerHTML = '<span class="field-error">Something went wrong. Please try again or email us directly.</span>';
+                    }
+                })
+                .catch(function() {
+                    statusEl.innerHTML = '<span class="field-error">Network error. Please try again later.</span>';
+                })
+                .finally(function() {
+                    submitBtn.disabled = false;
+                });
+            });
+        })();
         
     </script>
 </body>
