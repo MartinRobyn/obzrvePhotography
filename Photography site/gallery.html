@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Gallery - Photono</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================
+           CSS VARIABLES - DESIGN TOKENS
+           ======================================== */
+        :root {
+            /* Colors */
+            --ink-950: #0B0B0C;
+            --paper-50: #FFFFFF;
+            --paper-100: #F6F6F6;
+            --ash-200: #E6E6E6;
+            --ash-400: #B9B9B9;
+            --ash-500: #8F8F8F;
+            --ash-600: #6B6B6B;
+            --ash-700: #4A4A4A;
+            
+            --text-primary: var(--ink-950);
+            --text-secondary: var(--ash-700);
+            --text-inverted: var(--paper-50);
+            --divider: var(--ash-200);
+            --button-primary-bg: var(--ink-950);
+            --button-primary-text: var(--paper-50);
+            
+            /* Typography */
+            --font-display: 'Anton', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            --font-text: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            
+            /* Spacing */
+            --space-2: 8px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-7: 32px;
+            --space-8: 40px;
+            --space-9: 48px;
+            --space-10: 56px;
+            --space-12: 72px;
+            --space-14: 96px;
+            
+            --radius-pill: 999px;
+            --shadow-soft: 0 6px 24px rgba(0,0,0,0.08);
+            --duration-base: 180ms;
+            --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        /* Smooth scrolling (respects reduced motion preferences) */
+        @media (prefers-reduced-motion: no-preference) {
+            html:focus-within {
+                scroll-behavior: smooth;
+            }
+            
+            html {
+                scroll-behavior: smooth;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-text);
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--text-primary);
+            background: var(--paper-50);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Header */
+        .header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-8);
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .header-brand {
+            font-family: var(--font-display);
+            font-size: 24px;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            height: 44px;
+            padding: 0 var(--space-6);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-base) var(--easing-standard);
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+        
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .section {
+            padding: var(--space-14) 0;
+        }
+        
+        /* Gallery Header */
+        .gallery-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+        
+        .display-2 {
+            font-family: var(--font-display);
+            font-size: 72px;
+            line-height: 0.92;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+        }
+        
+        .label-caps {
+            font-size: 12px;
+            line-height: 1.2;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-6);
+        }
+        
+        .subhead {
+            font-size: 18px;
+            line-height: 1.35;
+            font-weight: 500;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-6);
+        }
+        
+        .gallery-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-4px);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 11, 12, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--duration-base) var(--easing-standard);
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-overlay-btn {
+            background: white;
+            color: var(--ink-950);
+            padding: var(--space-4) var(--space-6);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+        }
+        
+        .gallery-number {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: white;
+            background: rgba(11, 11, 12, 0.5);
+            padding: 4px 12px;
+            border-radius: 6px;
+            z-index: 10;
+        }
+        
+        /* Selection Checkbox */
+        .selection-checkbox {
+            position: absolute;
+            top: var(--space-4);
+            left: var(--space-4);
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 2px solid var(--ash-400);
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .selection-checkbox:hover {
+            border-color: var(--ink-950);
+            transform: scale(1.1);
+        }
+        
+        .selection-checkbox.selected {
+            background: var(--ink-950);
+            border-color: var(--ink-950);
+        }
+        
+        .selection-checkbox svg {
+            display: none;
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            stroke-width: 3;
+        }
+        
+        .selection-checkbox.selected svg {
+            display: block;
+        }
+        
+        .gallery-item.selected {
+            outline: 3px solid var(--ink-950);
+            outline-offset: -3px;
+        }
+        
+        .gallery-item.selected .gallery-overlay {
+            opacity: 0.3;
+            background: rgba(11, 11, 12, 0.3);
+        }
+        
+        /* Selection Bar */
+        .selection-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--ink-950);
+            color: white;
+            padding: var(--space-4) var(--space-7);
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: bottom 0.3s var(--easing-standard);
+        }
+        
+        .selection-bar.active {
+            bottom: var(--space-6);
+        }
+        
+        .selection-count {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        
+        .selection-bar .btn {
+            background: white;
+            color: var(--ink-950);
+            height: 40px;
+            font-size: 11px;
+        }
+        
+        .selection-bar .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-clear {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Login Screen */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--paper-50);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-overlay.hidden {
+            display: none;
+        }
+        
+        .login-container {
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .login-brand {
+            font-family: var(--font-display);
+            font-size: 48px;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-2);
+            color: var(--text-primary);
+        }
+        
+        .login-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-10);
+            line-height: 1.5;
+        }
+        
+        .login-card {
+            background: var(--paper-50);
+            border: 1px solid var(--divider);
+            border-radius: 16px;
+            padding: var(--space-9);
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: var(--space-2);
+            color: var(--text-primary);
+        }
+        
+        .login-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-8);
+            line-height: 1.5;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            height: 52px;
+            padding: 0 var(--space-6);
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--divider);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--duration-base) var(--easing-standard);
+            text-decoration: none;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        
+        .btn-google:hover {
+            border-color: var(--ash-400);
+            background: var(--paper-100);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-google img {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .divider-container {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin: var(--space-6) 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--divider);
+        }
+        
+        .divider-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            text-align: left;
+        }
+        
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .input-field {
+            height: 52px;
+            padding: 0 var(--space-4);
+            border: 2px solid var(--divider);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: var(--font-text);
+            color: var(--text-primary);
+            transition: all var(--duration-base) var(--easing-standard);
+            background: white;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--ink-950);
+            box-shadow: 0 0 0 3px rgba(11, 11, 12, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: var(--ash-500);
+        }
+        
+        .btn-email-submit {
+            height: 52px;
+            background: var(--ink-950);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--duration-base) var(--easing-standard);
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        
+        .btn-email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(11, 11, 12, 0.3);
+        }
+        
+        .btn-email-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .login-footer {
+            margin-top: var(--space-6);
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .login-footer a {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: #FEE;
+            border: 1px solid #FCC;
+            color: #C33;
+            padding: var(--space-4);
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: left;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 11, 12, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        
+        .lightbox-image {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: var(--space-6);
+            right: var(--space-6);
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-prev {
+            left: var(--space-6);
+        }
+        
+        .lightbox-next {
+            right: var(--space-6);
+        }
+        
+        .lightbox-download {
+            position: absolute;
+            bottom: var(--space-6);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .display-2 {
+                font-size: 56px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .header {
+                padding: 0 20px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-4);
+            }
+            
+            .gallery-image {
+                height: 300px;
+            }
+            
+            .display-2 {
+                font-size: 40px;
+            }
+            
+            .section {
+                padding: var(--space-10) 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-image {
+                height: 400px;
+            }
+            
+            .display-2 {
+                font-size: 36px;
+            }
+            
+            .selection-bar {
+                flex-direction: column;
+                padding: var(--space-4);
+                gap: var(--space-2);
+                width: calc(100% - 40px);
+                max-width: 400px;
+            }
+            
+            .selection-bar .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .login-brand {
+                font-size: 36px;
+            }
+            
+            .login-card {
+                padding: var(--space-6);
+            }
+            
+            .login-title {
+                font-size: 20px;
+            }
+            
+            .header > div {
+                gap: 8px !important;
+            }
+            
+            .header .btn {
+                font-size: 10px;
+                padding: 0 var(--space-4);
+                height: 38px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <div class="login-brand">PHOTONO</div>
+            <p class="login-subtitle">Access Your Photo Gallery</p>
+            
+            <div class="login-card">
+                <h1 class="login-title">Sign In</h1>
+                <p class="login-description">
+                    Sign in to view and download your photos from your recent shoot.
+                </p>
+                
+                <div class="error-message" id="errorMessage">
+                    Please enter a valid email address.
+                </div>
+                
+                <div class="login-form">
+                    <!-- Google Sign In -->
+                    <button class="btn-google" onclick="signInWithGoogle()">
+                        <svg width="20" height="20" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            <path fill="none" d="M0 0h48v48H0z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    
+                    <!-- Divider -->
+                    <div class="divider-container">
+                        <div class="divider-line"></div>
+                        <span class="divider-text">Or</span>
+                        <div class="divider-line"></div>
+                    </div>
+                    
+                    <!-- Email Sign In -->
+                    <div class="input-group">
+                        <label for="emailInput" class="input-label">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="emailInput" 
+                            class="input-field" 
+                            placeholder="your@email.com"
+                            autocomplete="email"
+                        >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="accessCodeInput" class="input-label">Access Code</label>
+                        <input 
+                            type="text" 
+                            id="accessCodeInput" 
+                            class="input-field" 
+                            placeholder="Enter your access code"
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <button class="btn-email-submit" onclick="signInWithEmail()">
+                        Sign In with Email
+                    </button>
+                </div>
+                
+                <div class="login-footer">
+                    Need help? <a href="mailto:contact@photono.com">Contact us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="header-brand">PHOTONO</a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="btn btn-primary" onclick="signOut()" style="background: transparent; color: var(--text-primary); border: 1px solid var(--divider);">Sign Out</button>
+            <a href="index.html" class="btn btn-primary">Back to Site</a>
+        </div>
+    </header>
+
+    <main class="container section">
+        <!-- Gallery Header -->
+        <div class="gallery-header">
+            <div class="label-caps">Client Gallery</div>
+            <h1 class="display-2">YOUR PHOTOS</h1>
+            <p class="subhead">
+                Select the photos you'd like edited, then submit your selection. Click any image to view full size.
+            </p>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Photos will be dynamically loaded here -->
+            <div class="gallery-item" data-index="0">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 0)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">01</div>
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1000&fit=crop" 
+                     alt="Photo 1" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(0)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="1">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 1)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">02</div>
+                <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&h=1000&fit=crop" 
+                     alt="Photo 2" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(1)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="2">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 2)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">03</div>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1000&fit=crop" 
+                     alt="Photo 3" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(2)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="3">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 3)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">04</div>
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop" 
+                     alt="Photo 4" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(3)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="4">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 4)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">05</div>
+                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&h=1000&fit=crop" 
+                     alt="Photo 5" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(4)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="5">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 5)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">06</div>
+                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&h=1000&fit=crop" 
+                     alt="Photo 6" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(5)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="6">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 6)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">07</div>
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=1000&fit=crop" 
+                     alt="Photo 7" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(6)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="7">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 7)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">08</div>
+                <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&h=1000&fit=crop" 
+                     alt="Photo 8" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(7)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="8">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 8)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">09</div>
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=1000&fit=crop" 
+                     alt="Photo 9" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(8)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="9">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 9)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">10</div>
+                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&h=1000&fit=crop" 
+                     alt="Photo 10" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(9)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="10">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 10)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">11</div>
+                <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&h=1000&fit=crop" 
+                     alt="Photo 11" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(10)">View Full Size</button>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-index="11">
+                <div class="selection-checkbox" onclick="toggleSelection(event, 11)">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="gallery-number">12</div>
+                <img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&h=1000&fit=crop" 
+                     alt="Photo 12" class="gallery-image">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn" onclick="openLightbox(11)">View Full Size</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Selection Bar -->
+    <div class="selection-bar" id="selectionBar">
+        <span class="selection-count" id="selectionCount">0 photos selected</span>
+        <button class="btn btn-clear" onclick="clearSelection()">Clear All</button>
+        <button class="btn btn-primary" onclick="submitSelection()">Submit Selection</button>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-prev" onclick="prevImage()" aria-label="Previous">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            
+            <img src="" alt="Full size photo" class="lightbox-image" id="lightboxImage">
+            
+            <button class="lightbox-nav lightbox-next" onclick="nextImage()" aria-label="Next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+            
+            <a class="btn btn-primary lightbox-download" id="downloadBtn" download>
+                Download Photo
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Authentication state
+        let isAuthenticated = false;
+        
+        // Check if user is already authenticated (from session storage)
+        window.addEventListener('DOMContentLoaded', function() {
+            const authenticated = sessionStorage.getItem('photonoAuthenticated');
+            if (authenticated === 'true') {
+                hideLoginScreen();
+            }
+        });
+        
+        // Sign in with Google
+        function signInWithGoogle() {
+            // In a real implementation, this would use Google OAuth
+            // For now, we'll simulate authentication
+            console.log('Initiating Google Sign-In...');
+            
+            // Simulate OAuth flow
+            setTimeout(() => {
+                isAuthenticated = true;
+                sessionStorage.setItem('photonoAuthenticated', 'true');
+                sessionStorage.setItem('photonoAuthMethod', 'google');
+                hideLoginScreen();
+                
+                // In production, you would redirect to Google OAuth:
+                // window.location.href = 'YOUR_GOOGLE_OAUTH_URL';
+            }, 500);
+        }
+        
+        // Sign in with email
+        function signInWithEmail() {
+            const emailInput = document.getElementById('emailInput');
+            const accessCodeInput = document.getElementById('accessCodeInput');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            const email = emailInput.value.trim();
+            const accessCode = accessCodeInput.value.trim();
+            
+            // Hide previous error
+            errorMessage.classList.remove('show');
+            
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            // Validate access code
+            if (!accessCode) {
+                errorMessage.textContent = 'Please enter your access code.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            // In a real implementation, you would verify with your server
+            // For demo purposes, accept any code with at least 4 characters
+            if (accessCode.length < 4) {
+                errorMessage.textContent = 'Access code must be at least 4 characters.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            // Simulate server verification
+            console.log('Verifying credentials...');
+            console.log('Email:', email);
+            console.log('Access Code:', accessCode);
+            
+            // For demo: accept any valid email and access code
+            isAuthenticated = true;
+            sessionStorage.setItem('photonoAuthenticated', 'true');
+            sessionStorage.setItem('photonoAuthMethod', 'email');
+            sessionStorage.setItem('photonoUserEmail', email);
+            hideLoginScreen();
+            
+            // In production, you would send credentials to your server:
+            // fetch('/api/auth/login', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ email, accessCode })
+            // })
+        }
+        
+        // Hide login screen and show gallery
+        function hideLoginScreen() {
+            const loginOverlay = document.getElementById('loginOverlay');
+            loginOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        
+        // Sign out
+        function signOut() {
+            isAuthenticated = false;
+            sessionStorage.removeItem('photonoAuthenticated');
+            sessionStorage.removeItem('photonoAuthMethod');
+            sessionStorage.removeItem('photonoUserEmail');
+            
+            // Clear any selections
+            clearSelection();
+            
+            // Show login screen again
+            const loginOverlay = document.getElementById('loginOverlay');
+            loginOverlay.classList.remove('hidden');
+            
+            // Clear form fields
+            document.getElementById('emailInput').value = '';
+            document.getElementById('accessCodeInput').value = '';
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+        
+        // Allow Enter key to submit email form
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('emailInput');
+            const accessCodeInput = document.getElementById('accessCodeInput');
+            
+            if (emailInput && accessCodeInput) {
+                emailInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        signInWithEmail();
+                    }
+                });
+                
+                accessCodeInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        signInWithEmail();
+                    }
+                });
+            }
+        });
+        
+        // Gallery images array
+        const galleryImages = [
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=2000&h=2500&fit=crop',
+            'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=2000&h=2500&fit=crop'
+        ];
+        
+        let currentImageIndex = 0;
+        let selectedPhotos = new Set();
+        
+        // Toggle photo selection
+        function toggleSelection(event, index) {
+            event.stopPropagation();
+            
+            const galleryItem = document.querySelector(`.gallery-item[data-index="${index}"]`);
+            const checkbox = galleryItem.querySelector('.selection-checkbox');
+            
+            if (selectedPhotos.has(index)) {
+                selectedPhotos.delete(index);
+                galleryItem.classList.remove('selected');
+                checkbox.classList.remove('selected');
+            } else {
+                selectedPhotos.add(index);
+                galleryItem.classList.add('selected');
+                checkbox.classList.add('selected');
+            }
+            
+            updateSelectionBar();
+        }
+        
+        // Update selection bar display
+        function updateSelectionBar() {
+            const selectionBar = document.getElementById('selectionBar');
+            const selectionCount = document.getElementById('selectionCount');
+            const count = selectedPhotos.size;
+            
+            if (count > 0) {
+                selectionBar.classList.add('active');
+                selectionCount.textContent = `${count} photo${count === 1 ? '' : 's'} selected`;
+            } else {
+                selectionBar.classList.remove('active');
+            }
+        }
+        
+        // Clear all selections
+        function clearSelection() {
+            selectedPhotos.clear();
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('.selection-checkbox').classList.remove('selected');
+            });
+            updateSelectionBar();
+        }
+        
+        // Submit selection
+        function submitSelection() {
+            if (selectedPhotos.size === 0) {
+                alert('Please select at least one photo to edit.');
+                return;
+            }
+            
+            const photoNumbers = Array.from(selectedPhotos)
+                .sort((a, b) => a - b)
+                .map(i => i + 1);
+            
+            alert(`You have selected ${selectedPhotos.size} photo(s) for editing:\nPhotos: ${photoNumbers.join(', ')}\n\nYour selection has been submitted!`);
+            
+            // Here you would typically send the selection to a server
+            console.log('Selected photo indices:', Array.from(selectedPhotos));
+            console.log('Selected photo URLs:', Array.from(selectedPhotos).map(i => galleryImages[i]));
+            
+            // Optionally clear selection after submission
+            // clearSelection();
+        }
+        
+        // Open lightbox
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            lightboxImage.src = galleryImages[index];
+            downloadBtn.href = galleryImages[index];
+            downloadBtn.download = `photo-${index + 1}.jpg`;
+            
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close lightbox
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Next image
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            openLightbox(currentImageIndex);
+        }
+        
+        // Previous image
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            openLightbox(currentImageIndex);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowRight') {
+                    nextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    prevImage();
+                }
+            }
+        });
+        
+        // Close lightbox when clicking outside image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+        
+        // Open lightbox when clicking a photo (keeps checkbox interactions intact)
+        document.getElementById('galleryGrid')?.addEventListener('click', function(e) {
+            // Don't hijack selection clicks or explicit buttons
+            if (e.target.closest('.selection-checkbox')) return;
+            if (e.target.closest('.gallery-overlay-btn')) return;
+            
+            const img = e.target.closest('.gallery-image');
+            if (!img) return;
+            
+            const item = img.closest('.gallery-item');
+            const index = Number(item?.getAttribute('data-index'));
+            if (!Number.isFinite(index)) return;
+            
+            openLightbox(index);
+        });
+
+        // ----------------------------------------
+        // Scroll to element (smooth) + hash-on-load
+        // (No in-page nav today, but supports future anchors like gallery.html#top)
+        // ----------------------------------------
+        function getScrollOffsetPx() {
+            const header = document.querySelector('.header');
+            if (!header) return 12;
+            const pos = window.getComputedStyle(header).position;
+            const isOverlayHeader = pos === 'fixed' || pos === 'sticky';
+            const headerH = header.getBoundingClientRect().height || 0;
+            return (isOverlayHeader ? headerH : 0) + 12;
+        }
+
+        function scrollToElement(el, { behavior = 'smooth', updateHash = null } = {}) {
+            if (!el) return false;
+            const offset = getScrollOffsetPx();
+            const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: Math.max(0, y), behavior });
+            if (typeof updateHash === 'string' && updateHash.startsWith('#')) {
+                history.pushState(null, '', updateHash);
+            }
+            return true;
+        }
+
+        function scrollToHash(hash, { behavior = 'smooth' } = {}) {
+            if (!hash || hash === '#' || !hash.startsWith('#')) return false;
+            const el = document.querySelector(hash);
+            return scrollToElement(el, { behavior, updateHash: null });
+        }
+
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest?.('a');
+            if (!a) return;
+
+            const href = a.getAttribute('href');
+            if (!href || !href.startsWith('#') || href.length <= 1) return;
+
+            const target = document.querySelector(href);
+            if (!target) return;
+
+            e.preventDefault();
+            scrollToElement(target, { behavior: 'smooth', updateHash: href });
+        });
+
+        if (window.location.hash && window.location.hash.length > 1) {
+            requestAnimationFrame(() => {
+                scrollToHash(window.location.hash, { behavior: 'auto' });
+            });
+        }
+
+        window.addEventListener('hashchange', () => {
+            scrollToHash(window.location.hash, { behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,3412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photono - Photography Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================
+           CSS VARIABLES - DESIGN TOKENS
+           ======================================== */
+        :root {
+            /* Colors */
+            --ink-950: #0B0B0C;
+            --ink-900: #111114;
+            --ink-800: #1A1B1F;
+            --paper-50: #FFFFFF;
+            --paper-100: #F6F6F6;
+            --ash-200: #E6E6E6;
+            --ash-300: #D6D6D6;
+            --ash-400: #B9B9B9;
+            --ash-500: #8F8F8F;
+            --ash-600: #6B6B6B;
+            --ash-700: #4A4A4A;
+            
+            /* Semantic Colors */
+            --bg: var(--paper-50);
+            --bg-inverted: var(--ink-950);
+            --surface: var(--paper-50);
+            --surface-muted: var(--paper-100);
+            --text-primary: var(--ink-950);
+            --text-secondary: var(--ash-700);
+            --text-tertiary: var(--ash-600);
+            --text-inverted: var(--paper-50);
+            --border: var(--ash-200);
+            --border-strong: var(--ash-400);
+            --divider: var(--ash-200);
+            --focus-ring: var(--ink-950);
+            --link: var(--ink-950);
+            --button-primary-bg: var(--ink-950);
+            --button-primary-text: var(--paper-50);
+            --button-secondary-bg: var(--paper-50);
+            --button-secondary-text: var(--ink-950);
+            --button-secondary-border: var(--ink-950);
+            --field-underline: var(--ash-400);
+            --field-placeholder: var(--ash-500);
+            --danger: #B42318;
+            --success: #067647;
+            --warning: #B54708;
+            --info: #175CD3;
+            
+            /* Typography */
+            --font-display: 'Anton', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            --font-text: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            
+            /* Spacing */
+            --space-0: 0;
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-7: 32px;
+            --space-8: 40px;
+            --space-9: 48px;
+            --space-10: 56px;
+            --space-11: 64px;
+            --space-12: 72px;
+            --space-13: 80px;
+            --space-14: 96px;
+            --space-15: 120px;
+            
+            /* Radii */
+            --radius-none: 0;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            
+            /* Shadows */
+            --shadow-none: none;
+            --shadow-soft: 0 6px 24px rgba(0,0,0,0.08);
+            
+            /* Motion */
+            --duration-fast: 120ms;
+            --duration-base: 180ms;
+            --duration-slow: 260ms;
+            --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+            --easing-exit: cubic-bezier(0.4, 0, 1, 1);
+        }
+        
+        /* ========================================
+           BASE STYLES
+           ======================================== */
+        /* Smooth scrolling (respects reduced motion preferences) */
+        @media (prefers-reduced-motion: no-preference) {
+            html:focus-within {
+                scroll-behavior: smooth;
+            }
+            
+            html {
+                scroll-behavior: smooth;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-text);
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--text-primary);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ========================================
+           TYPOGRAPHY CLASSES
+           ======================================== */
+        .display-1 {
+            font-family: var(--font-display);
+            font-size: 96px;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .display-2 {
+            font-family: var(--font-display);
+            font-size: 72px;
+            line-height: 0.92;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .display-3 {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 0.95;
+            letter-spacing: -0.015em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .headline {
+            font-family: var(--font-text);
+            font-size: 28px;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            font-weight: 600;
+        }
+        
+        .subhead {
+            font-family: var(--font-text);
+            font-size: 18px;
+            line-height: 1.35;
+            letter-spacing: 0;
+            font-weight: 500;
+        }
+        
+        .body {
+            font-family: var(--font-text);
+            font-size: 16px;
+            line-height: 1.55;
+            letter-spacing: 0;
+            font-weight: 400;
+        }
+        
+        .body-small {
+            font-family: var(--font-text);
+            font-size: 14px;
+            line-height: 1.55;
+            letter-spacing: 0;
+            font-weight: 400;
+        }
+        
+        .label-caps {
+            font-family: var(--font-text);
+            font-size: 12px;
+            line-height: 1.2;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .muted-metadata {
+            font-size: 12px;
+            line-height: 1.3;
+            color: var(--text-secondary);
+        }
+        
+        /* ========================================
+           LAYOUT
+           ======================================== */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .section {
+            padding: var(--space-14) 0;
+        }
+        
+        .section-header {
+            margin-bottom: var(--space-12);
+            padding-bottom: var(--space-6);
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .grid {
+            display: grid;
+            gap: var(--space-6);
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        /* ========================================
+           BACK TO TOP BUTTON
+           ======================================== */
+        .back-to-top {
+            position: fixed;
+            bottom: var(--space-7);
+            right: var(--space-7);
+            width: 48px;
+            height: 48px;
+            background: var(--ink-950);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--duration-base) var(--easing-standard);
+            z-index: 100;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            background: var(--ink-900);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        }
+        
+        .back-to-top:active {
+            transform: translateY(0);
+        }
+        
+        /* ========================================
+           PACKAGE CARDS
+           ======================================== */
+        .package-card {
+            background: var(--paper-50);
+            padding: var(--space-9);
+            position: relative;
+        }
+        
+        .package-featured {
+            background: var(--paper-100);
+            border: 2px solid white;
+        }
+        
+        .package-badge {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            background: var(--ink-950);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-pill);
+        }
+        
+        .package-header {
+            margin-bottom: var(--space-6);
+        }
+        
+        .package-price {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+        }
+        
+        .package-price-amount {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            color: var(--ink-950);
+        }
+        
+        .package-price-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .package-divider {
+            height: 1px;
+            background: var(--divider);
+            margin: var(--space-6) 0;
+        }
+        
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .package-features li {
+            font-size: 14px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+            padding: var(--space-3) 0;
+            padding-left: var(--space-6);
+            position: relative;
+        }
+        
+        .package-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--ink-950);
+            font-weight: 700;
+        }
+        
+        /* ========================================
+           GALLERY COLLECTION LAYOUT
+           ======================================== */
+        .gallery-collection {
+            margin-top: var(--space-9);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-6);
+            margin-bottom: var(--space-14);
+        }
+        
+        .gallery-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-4px);
+        }
+        
+        .gallery-number {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: white;
+            z-index: 10;
+            background: rgba(11, 11, 12, 0.5);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-sm);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+            transition: transform var(--duration-slow) var(--easing-standard), 
+                        opacity var(--duration-base) var(--easing-standard);
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.02);
+        }
+        
+        .gallery-caption {
+            padding-top: var(--space-4);
+        }
+        
+        .gallery-title {
+            font-family: var(--font-display);
+            font-size: 20px;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+        
+        .gallery-meta {
+            font-size: 12px;
+            line-height: 1.3;
+            color: var(--text-secondary);
+        }
+        
+        .collection-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-top: var(--space-9);
+            border-top: 1px solid var(--divider);
+        }
+        
+        .collection-nav {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .collection-nav-btn {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--border-strong);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .collection-nav-btn:hover {
+            background: var(--ink-950);
+            color: white;
+            border-color: var(--ink-950);
+        }
+
+        /* ========================================
+          LIGHTBOX (INDEX PAGE)
+          ======================================== */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 11, 12, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 92vw;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        .lightbox-image {
+            max-width: 92vw;
+            max-height: 84vh;
+            object-fit: contain;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: var(--space-6);
+            right: var(--space-6);
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-prev {
+            left: var(--space-6);
+        }
+        
+        .lightbox-next {
+            right: var(--space-6);
+        }
+        
+        .lightbox-caption {
+            text-align: center;
+            max-width: 720px;
+        }
+        
+        .lightbox-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+        }
+        
+        .lightbox-meta {
+            font-size: 12px;
+            line-height: 1.3;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.65);
+        }
+        
+        /* ========================================
+           HERO SPLIT LAYOUT
+           ======================================== */
+        .hero-split {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            background: var(--ink-950);
+            overflow: hidden;
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.85;
+            transition: opacity 300ms ease-in-out;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(11,11,12,0.75) 0%, rgba(11,11,12,0.25) 50%, rgba(11,11,12,0.4) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            width: 100%;
+            padding: 80px 0 0 0;
+        }
+        
+        .hero-sidebar {
+            width: 280px;
+            padding: var(--space-12) var(--space-8);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hero-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .hero-nav-item {
+            margin-bottom: var(--space-4);
+        }
+        
+        .hero-nav-link {
+            font-family: var(--font-display);
+            font-size: 32px;
+            line-height: 1.1;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: all var(--duration-base) var(--easing-standard);
+            display: block;
+            font-weight: 700;
+        }
+        
+        .hero-nav-link:hover,
+        .hero-nav-link.active {
+            color: rgba(255, 255, 255, 1);
+            transform: translateX(4px);
+        }
+        
+        .hero-nav-featured {
+            position: relative;
+            margin: var(--space-6) 0;
+        }
+        
+        .hero-nav-featured-img {
+            width: 140px;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: var(--space-2);
+        }
+        
+        .hero-nav-featured-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-display);
+            font-size: 40px;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+        }
+        
+        .hero-carousel-controls {
+            display: flex;
+            gap: var(--space-4);
+        }
+        
+        .hero-carousel-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .hero-carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .hero-carousel-progress {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: var(--space-4);
+            overflow: hidden;
+        }
+        
+        .hero-carousel-progress-bar {
+            height: 100%;
+            width: 25%;
+            background: rgba(255, 255, 255, 0.8);
+            transition: width var(--duration-slow) var(--easing-standard);
+        }
+        
+        .hero-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-12) var(--space-8);
+            padding-right: var(--space-14);
+        }
+        
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: 96px;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: var(--space-8);
+            text-align: right;
+        }
+        
+        .hero-subtext {
+            font-size: 11px;
+            line-height: 1.5;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: right;
+            max-width: 400px;
+            margin-left: auto;
+            font-weight: 500;
+        }
+        
+        /* ========================================
+           HEADER
+           ======================================== */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-8);
+            z-index: 50;
+            background: transparent;
+        }
+        
+        .header.on-hero {
+            border-bottom: none;
+        }
+        
+        .header.on-hero .header-brand,
+        .header.on-hero .nav-link {
+            color: var(--text-inverted);
+        }
+        
+        .header-brand {
+            font-family: var(--font-display);
+            font-size: 24px;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+        
+        .nav {
+            display: flex;
+            gap: var(--space-7);
+            list-style: none;
+        }
+        
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: opacity var(--duration-base) var(--easing-standard);
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+        }
+        
+        .nav-link:focus {
+            outline: 2px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+        
+        .nav-link.active {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+        }
+        
+        .nav-link-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        
+        /* ========================================
+           BUTTONS
+           ======================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            height: 44px;
+            padding: 0 var(--space-6);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: var(--font-text);
+            border-radius: var(--radius-pill);
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-base) var(--easing-standard);
+            text-decoration: none;
+        }
+        
+        .btn-lg {
+            height: 52px;
+            padding: 0 28px;
+        }
+        
+        .btn-primary {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background: var(--button-secondary-bg);
+            color: var(--button-secondary-text);
+            border: 2px solid var(--button-secondary-border);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-primary);
+        }
+        
+        .btn-ghost:hover {
+            text-decoration: underline;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn:focus-visible {
+            outline: 2px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+        
+        /* ========================================
+           FORMS
+           ======================================== */
+        .form {
+            max-width: 560px;
+        }
+        
+        .field {
+            margin-bottom: var(--space-5);
+        }
+        
+        .field-label {
+            display: block;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .text-input,
+        .textarea,
+        .select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--field-underline);
+            padding: var(--space-3) 0;
+            font-family: var(--font-text);
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: border-color var(--duration-base) var(--easing-standard);
+        }
+        
+        .text-input::placeholder,
+        .textarea::placeholder {
+            color: var(--field-placeholder);
+        }
+        
+        .text-input:focus,
+        .textarea:focus,
+        .select:focus {
+            outline: none;
+            border-bottom: 2px solid var(--text-primary);
+        }
+        
+        .text-input.error,
+        .textarea.error,
+        .select.error {
+            border-bottom-color: var(--danger);
+        }
+        
+        .text-input:disabled,
+        .textarea:disabled,
+        .select:disabled {
+            opacity: 0.6;
+        }
+        
+        .textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%230B0B0C' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right center;
+            padding-right: var(--space-6);
+        }
+        
+        .field-error {
+            display: block;
+            font-size: 14px;
+            color: var(--danger);
+            margin-top: var(--space-1);
+        }
+        
+        /* Checkbox & Radio */
+        .checkbox-wrapper,
+        .radio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .checkbox,
+        .radio {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border-strong);
+            cursor: pointer;
+            appearance: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkbox {
+            border-radius: var(--radius-sm);
+        }
+        
+        .checkbox:checked {
+            background: var(--ink-950);
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5L4.5 8.5L11 1.5' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .radio {
+            border-radius: 50%;
+        }
+        
+        .radio:checked {
+            border-width: 5px;
+            border-color: var(--ink-950);
+        }
+        
+        /* Switch */
+        .switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: var(--ash-300);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background var(--duration-base) var(--easing-standard);
+        }
+        
+        .switch-input {
+            display: none;
+        }
+        
+        .switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .switch-input:checked + .switch {
+            background: var(--ink-950);
+        }
+        
+        .switch-input:checked + .switch .switch-thumb {
+            transform: translateX(16px);
+        }
+        
+        /* ========================================
+           DIVIDER
+           ======================================== */
+        .divider {
+            height: 1px;
+            background: var(--divider);
+            margin: var(--space-6) 0;
+        }
+        
+        /* ========================================
+           CARDS
+           ======================================== */
+        .card {
+            padding: var(--space-6);
+        }
+        
+        .card-flat {
+            background: transparent;
+            border: none;
+        }
+        
+        .card-hairline {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        
+        .image-card {
+            cursor: pointer;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .image-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .image-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .image-card:hover img {
+            transform: scale(1.02);
+        }
+        
+        .image-card-caption {
+            padding-top: var(--space-3);
+        }
+        
+        .image-card-index {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .image-card-title {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        
+        .image-card-meta {
+            font-size: 12px;
+            line-height: 1.3;
+            color: var(--text-secondary);
+        }
+        
+        /* ========================================
+           BADGE
+           ======================================== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 6px 10px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-pill);
+            background: transparent;
+        }
+        
+        .badge-success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .badge-warning {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+        
+        .badge-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .badge-info {
+            border-color: var(--info);
+            color: var(--info);
+        }
+        
+        /* ========================================
+           TABLE
+           ======================================== */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        
+        .table th {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .table td {
+            font-size: 14px;
+            padding: var(--space-4) 0;
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        /* ========================================
+           TABS
+           ======================================== */
+        .tabs {
+            display: flex;
+            gap: var(--space-7);
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .tab {
+            position: relative;
+            padding: var(--space-3) 0;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color var(--duration-base) var(--easing-standard);
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--text-primary);
+        }
+        
+        /* ========================================
+           BREADCRUMB
+           ======================================== */
+        .breadcrumb {
+            display: flex;
+            gap: var(--space-2);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-tertiary);
+        }
+        
+        /* ========================================
+           PAGINATION
+           ======================================== */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            justify-content: center;
+        }
+        
+        .pagination-info {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* ========================================
+           ACCORDION
+           ======================================== */
+        .accordion-item {
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: var(--space-5) 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+        
+        .accordion-title {
+            font-size: 18px;
+            line-height: 1.35;
+            font-weight: 500;
+        }
+        
+        .accordion-icon {
+            font-size: 20px;
+            font-weight: 300;
+            transition: transform var(--duration-base) var(--easing-standard);
+        }
+        
+        .accordion-item.open .accordion-icon {
+            transform: rotate(45deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--duration-slow) var(--easing-standard);
+        }
+        
+        .accordion-item.open .accordion-content {
+            max-height: 500px;
+        }
+        
+        .accordion-body {
+            font-size: 14px;
+            padding-bottom: var(--space-5);
+            color: var(--text-secondary);
+        }
+        
+        /* ========================================
+           STAT BLOCK
+           ======================================== */
+        .stat-block {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 0.95;
+            letter-spacing: -0.015em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        /* ========================================
+           LOADER
+           ======================================== */
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-primary);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ========================================
+           SKELETON
+           ======================================== */
+        .skeleton {
+            background: var(--ash-200);
+            border-radius: var(--radius-none);
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+        
+        .skeleton-text {
+            height: 16px;
+            margin-bottom: var(--space-2);
+        }
+        
+        .skeleton-image {
+            height: 200px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* ========================================
+           TOAST
+           ======================================== */
+        .toast {
+            position: fixed;
+            bottom: var(--space-7);
+            right: var(--space-7);
+            background: var(--ink-950);
+            color: var(--paper-50);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            font-size: 14px;
+            max-width: 400px;
+        }
+        
+        /* ========================================
+           TOOLTIP
+           ======================================== */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: var(--space-2);
+            background: var(--ink-950);
+            color: var(--paper-50);
+            padding: var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-base) var(--easing-standard);
+        }
+        
+        .tooltip-wrapper:hover .tooltip {
+            opacity: 1;
+        }
+        
+        /* ========================================
+           SOCIAL ICON BUTTON
+           ======================================== */
+        .social-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-pill);
+            background: var(--paper-50);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .social-icon-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        /* ========================================
+           LANGUAGE SWITCHER
+           ======================================== */
+        .language-switcher {
+            display: flex;
+            gap: var(--space-4);
+        }
+        
+        .language-link {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--ash-400);
+            text-decoration: none;
+            transition: color var(--duration-base) var(--easing-standard);
+        }
+        
+        .language-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .language-link.active {
+            color: var(--text-primary);
+        }
+        
+        /* ========================================
+           FOOTER
+           ======================================== */
+        .footer {
+            background: var(--bg-inverted);
+            color: var(--text-inverted);
+            padding: var(--space-14) 0;
+            margin-top: var(--space-15);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-9);
+        }
+        
+        .footer-heading {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+        }
+        
+        .footer-link {
+            display: block;
+            color: var(--ash-400);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: var(--space-2);
+            transition: color var(--duration-base) var(--easing-standard);
+        }
+        
+        .footer-link:hover {
+            color: var(--text-inverted);
+        }
+        
+        /* ========================================
+           EMPTY STATE
+           ======================================== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-12) 0;
+        }
+        
+        .empty-state-title {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 0.95;
+            letter-spacing: -0.015em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+        }
+        
+        .empty-state-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-6);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* ========================================
+           ERROR STATE
+           ======================================== */
+        .error-state {
+            text-align: center;
+            padding: var(--space-12) 0;
+        }
+        
+        .error-state-title {
+            font-size: 28px;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+        }
+        
+        .error-state-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .error-state-meta {
+            font-size: 12px;
+            line-height: 1.3;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-6);
+        }
+        
+        /* ========================================
+           DEMO GRID & SPACING
+           ======================================== */
+        .component-grid {
+            display: grid;
+            gap: var(--space-9);
+        }
+        
+        .demo-box {
+            padding: var(--space-6);
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius-sm);
+        }
+        
+        .component-row {
+            display: flex;
+            gap: var(--space-4);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        /* ========================================
+           MODAL
+           ======================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 11, 12, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal {
+            background: var(--paper-50);
+            padding: var(--space-9);
+            max-width: 600px;
+            width: 90%;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+        }
+        
+        .modal-body {
+            font-size: 16px;
+            line-height: 1.55;
+            margin-bottom: var(--space-6);
+            color: var(--text-secondary);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: flex-end;
+        }
+        
+        /* ========================================
+           UTILITY CLASSES
+           ======================================== */
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-tertiary { color: var(--text-tertiary); }
+        .text-inverted { color: var(--text-inverted); }
+        .text-danger { color: var(--danger); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-info { color: var(--info); }
+        
+        .mt-2 { margin-top: var(--space-2); }
+        .mt-4 { margin-top: var(--space-4); }
+        .mt-6 { margin-top: var(--space-6); }
+        .mb-2 { margin-bottom: var(--space-2); }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-2);
+        }
+        
+        .mobile-menu-icon {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: white;
+            position: relative;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .mobile-menu-icon::before,
+        .mobile-menu-icon::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all var(--duration-base) var(--easing-standard);
+        }
+        
+        .mobile-menu-icon::before {
+            top: -8px;
+        }
+        
+        .mobile-menu-icon::after {
+            top: 8px;
+        }
+        
+        .mobile-menu-toggle.active .mobile-menu-icon {
+            background: transparent;
+        }
+        
+        .mobile-menu-toggle.active .mobile-menu-icon::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+        
+        .mobile-menu-toggle.active .mobile-menu-icon::after {
+            transform: rotate(-45deg);
+            top: 0;
+        }
+        
+        /* Tablet (768px - 1024px) */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 28px;
+            }
+            
+            .section {
+                padding: var(--space-12) 0;
+            }
+            
+            .hero-headline {
+                font-size: 72px;
+            }
+            
+            .hero-nav-link {
+                font-size: 28px;
+            }
+            
+            .hero-sidebar {
+                width: 240px;
+                padding: var(--space-10) var(--space-6);
+            }
+            
+            .hero-main {
+                padding: var(--space-10) var(--space-6);
+            }
+            
+            .display-1 {
+                font-size: 72px;
+                line-height: 0.92;
+            }
+            
+            .display-2 {
+                font-size: 56px;
+            }
+            
+            .display-3 {
+                font-size: 48px;
+            }
+            
+            .headline {
+                font-size: 24px;
+            }
+            
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer {
+                padding: var(--space-12) 0;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-value {
+                font-size: 48px;
+            }
+            
+            /* Gallery tablet */
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .gallery-image {
+                height: 400px;
+            }
+            
+            /* Packages tablet */
+            .package-price-amount {
+                font-size: 48px;
+            }
+        }
+        
+        /* Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            :root {
+                --space-section: var(--space-10);
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: var(--space-10) 0;
+            }
+            
+            /* Hero responsive */
+            .hero-split {
+                min-height: 100vh;
+            }
+            
+            .hero-content {
+                flex-direction: column;
+                padding-top: 64px;
+            }
+            
+            .hero-sidebar {
+                width: 100%;
+                padding: var(--space-6) var(--space-5);
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: var(--space-4);
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            
+            .hero-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--space-3);
+                width: 100%;
+            }
+            
+            .hero-nav-item {
+                margin-bottom: 0;
+            }
+            
+            .hero-nav-link {
+                font-size: 18px;
+            }
+            
+            .hero-nav-featured {
+                display: none;
+            }
+            
+            .hero-carousel-controls {
+                margin-top: var(--space-4);
+            }
+            
+            .hero-main {
+                padding: var(--space-8) var(--space-5);
+                text-align: center;
+            }
+            
+            .hero-headline {
+                font-size: 48px;
+                line-height: 0.95;
+                text-align: center;
+                margin-bottom: var(--space-6);
+            }
+            
+            .hero-subtext {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 10px;
+            }
+            
+            /* Typography scaling */
+            .display-1 {
+                font-size: 48px;
+                line-height: 0.95;
+            }
+            
+            .display-2 {
+                font-size: 40px;
+                line-height: 0.95;
+            }
+            
+            .display-3 {
+                font-size: 32px;
+                line-height: 1;
+            }
+            
+            .headline {
+                font-size: 22px;
+            }
+            
+            .subhead {
+                font-size: 16px;
+            }
+            
+            .body {
+                font-size: 15px;
+            }
+            
+            /* Header & Navigation */
+            .header {
+                height: 64px;
+                padding: 0 var(--space-5);
+            }
+            
+            .header-brand {
+                font-size: 20px;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: rgba(11, 11, 12, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: var(--space-6) var(--space-5);
+                gap: var(--space-4);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all var(--duration-slow) var(--easing-standard);
+                z-index: 100;
+            }
+            
+            .nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+                padding: var(--space-2) 0;
+                color: white;
+            }
+            
+            /* Buttons */
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .component-row .btn {
+                width: auto;
+                min-width: 120px;
+            }
+            
+            .btn-lg {
+                height: 48px;
+            }
+            
+            /* Forms */
+            .form {
+                max-width: 100%;
+            }
+            
+            .field {
+                margin-bottom: var(--space-4);
+            }
+            
+            /* Grid layouts */
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+                gap: var(--space-5);
+            }
+            
+            /* Gallery responsive */
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-4);
+            }
+            
+            .gallery-image {
+                height: 350px;
+            }
+            
+            .collection-footer {
+                justify-content: center;
+            }
+            
+            /* Cards */
+            .image-card img {
+                height: 240px;
+            }
+            
+            /* Table - horizontal scroll */
+            .table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .table {
+                min-width: 600px;
+            }
+            
+            .table th,
+            .table td {
+                padding: var(--space-3) var(--space-2);
+                font-size: 13px;
+            }
+            
+            /* Tabs - horizontal scroll */
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                gap: var(--space-5);
+                scrollbar-width: none;
+            }
+            
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                font-size: 11px;
+            }
+            
+            /* Pagination */
+            .pagination {
+                flex-direction: column;
+                gap: var(--space-3);
+            }
+            
+            .pagination-info {
+                order: -1;
+            }
+            
+            .component-row {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .component-row .btn,
+            .component-row .badge,
+            .component-row .social-icon-btn {
+                width: auto;
+            }
+            
+            /* Stats */
+            .stat-value {
+                font-size: 40px;
+            }
+            
+            /* Modal */
+            .modal {
+                width: 95%;
+                padding: var(--space-7);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            
+            .modal-title {
+                font-size: 24px;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .modal-actions .btn {
+                width: 100%;
+            }
+            
+            /* Toast */
+            .toast {
+                left: var(--space-5);
+                right: var(--space-5);
+                bottom: var(--space-5);
+                max-width: none;
+            }
+            
+            /* Footer */
+            .footer {
+                padding: var(--space-11) 0;
+                margin-top: var(--space-12);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-7);
+            }
+            
+            /* Section headers */
+            .section-header {
+                margin-bottom: var(--space-8);
+            }
+            
+            /* Accordion */
+            .accordion-title {
+                font-size: 16px;
+                padding-right: var(--space-6);
+            }
+            
+            .accordion-header {
+                padding: var(--space-4) 0;
+            }
+            
+            .accordion-body {
+                padding-bottom: var(--space-4);
+                font-size: 13px;
+            }
+            
+            /* Empty & Error states */
+            .empty-state,
+            .error-state {
+                padding: var(--space-9) 0;
+            }
+            
+            .empty-state-title,
+            .stat-block .stat-value {
+                font-size: 36px;
+            }
+            
+            .error-state-title {
+                font-size: 22px;
+            }
+            
+            /* Breadcrumb */
+            .breadcrumb {
+                font-size: 10px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Language switcher */
+            .language-switcher {
+                gap: var(--space-3);
+                flex-wrap: wrap;
+            }
+            
+            /* Card spacing */
+            .card {
+                padding: var(--space-5);
+            }
+            
+            /* Demo boxes */
+            .demo-box {
+                padding: var(--space-5);
+            }
+        }
+        
+        /* Small mobile (max-width: 480px) */
+        @media (max-width: 480px) {
+            .hero-headline {
+                font-size: 36px;
+            }
+            
+            .hero-nav-link {
+                font-size: 16px;
+            }
+            
+            .hero-main {
+                padding: var(--space-6) var(--space-4);
+            }
+            
+            .hero-sidebar {
+                padding: var(--space-4) var(--space-4);
+            }
+            
+            /* Gallery small mobile */
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-image {
+                height: 400px;
+            }
+            
+            .gallery-title {
+                font-size: 16px;
+            }
+            
+            /* Packages small mobile */
+            .package-price-amount {
+                font-size: 40px;
+            }
+            
+            .package-card {
+                padding: var(--space-6);
+            }
+            
+            /* Back to top mobile */
+            .back-to-top {
+                bottom: var(--space-5);
+                right: var(--space-5);
+                width: 44px;
+                height: 44px;
+            }
+            
+            .display-1 {
+                font-size: 40px;
+            }
+            
+            .display-2 {
+                font-size: 36px;
+            }
+            
+            .display-3 {
+                font-size: 28px;
+            }
+            
+            .headline {
+                font-size: 20px;
+            }
+            
+            .stat-value,
+            .empty-state-title {
+                font-size: 32px;
+            }
+            
+            .btn {
+                height: 40px;
+                padding: 0 var(--space-5);
+                font-size: 11px;
+            }
+            
+            .btn-lg {
+                height: 44px;
+            }
+            
+            .image-card img {
+                height: 200px;
+            }
+            
+            .modal {
+                padding: var(--space-6);
+            }
+        }
+        
+        /* Landscape mobile orientation */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .modal {
+                max-height: 85vh;
+                padding: var(--space-5);
+            }
+            
+            .section {
+                padding: var(--space-8) 0;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .nav-link,
+            .tab,
+            .accordion-header,
+            .social-icon-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .checkbox,
+            .radio {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .switch {
+                width: 40px;
+                height: 24px;
+            }
+            
+            .switch-thumb {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .header,
+            .footer,
+            .btn,
+            .nav,
+            .mobile-menu-toggle {
+                display: none;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         HEADER / NAVIGATION
+         ======================================== -->
+    <header class="header on-hero">
+        <div class="header-brand">PHOTONO</div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <span class="mobile-menu-icon"></span>
+        </button>
+        <nav>
+            <ul class="nav" id="mobileNav">
+                <li><a href="#packages" class="nav-link smooth-scroll">Packages</a></li>
+                <li><a href="#about" class="nav-link smooth-scroll">About Us</a></li>
+                <li><a href="#contact" class="nav-link nav-link-cta smooth-scroll">Let's Talk <span>↗</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ========================================
+         HERO SPLIT SECTION
+         ======================================== -->
+    <section class="hero-split">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1600&h=1200&fit=crop" 
+             alt="Portrait photography" 
+             class="hero-background">
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <aside class="hero-sidebar">
+                <nav>
+                    <ul class="hero-nav">
+                        <li class="hero-nav-item">
+                            <a href="#product" class="hero-nav-link">Product</a>
+                        </li>
+                        <li class="hero-nav-item">
+                            <a href="#wedding" class="hero-nav-link">Wedding</a>
+                        </li>
+                        <li class="hero-nav-item">
+                            <a href="#event" class="hero-nav-link">Event</a>
+                        </li>
+                        <li class="hero-nav-item">
+                            <a href="#portrait" class="hero-nav-link">Portrait</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div>
+                    <div class="hero-carousel-controls">
+                        <button class="hero-carousel-btn" id="heroPrev" aria-label="Previous">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 12L6 8L10 4"/>
+                            </svg>
+                        </button>
+                        <button class="hero-carousel-btn" id="heroNext" aria-label="Next">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 12L10 8L6 4"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="hero-carousel-progress">
+                        <div class="hero-carousel-progress-bar" id="heroProgress"></div>
+                    </div>
+                </div>
+            </aside>
+            
+            <div class="hero-main">
+                <h1 class="hero-headline">
+                    The Best For<br>
+                    All Your<br>
+                    Photography<br>
+                    Needs
+                </h1>
+                <p class="hero-subtext">
+                    Choose us to immortalize your precious moments with priceless and immersive visual storytelling
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================
+         PHOTOGRAPHY SERVICES SECTIONS
+         ======================================== -->
+    
+    <!-- Product Photography Section -->
+    <section id="product" class="section" style="background: var(--paper-50); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">Service 01</div>
+            <h2 class="display-2 mb-6">PRODUCT PHOTOGRAPHY</h2>
+            <p class="subhead mb-12 text-secondary" style="max-width: 700px;">
+                Showcase your products with stunning, high-quality imagery that drives sales 
+                and elevates your brand presence.
+            </p>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-collection" id="productGallery">
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-number">01</div>
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=800&fit=crop" 
+                             alt="Product Photography 1" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Luxury Watch Collection</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">02</div>
+                        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=800&fit=crop" 
+                             alt="Product Photography 2" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Designer Sunglasses</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">03</div>
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop" 
+                             alt="Product Photography 3" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Premium Headphones</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">04</div>
+                        <img src="https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?w=600&h=800&fit=crop" 
+                             alt="Product Photography 4" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Cosmetics Line</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="collection-footer">
+                    <div class="collection-nav">
+                        <button class="collection-nav-btn" data-gallery="productGallery" data-direction="prev" aria-label="Previous">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="collection-nav-btn" data-gallery="productGallery" data-direction="next" aria-label="Next">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wedding Photography Section -->
+    <section id="wedding" class="section" style="background: var(--surface-muted); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">Service 02</div>
+            <h2 class="display-2 mb-6">WEDDING PHOTOGRAPHY</h2>
+            <p class="subhead mb-12 text-secondary" style="max-width: 700px;">
+                Timeless imagery that captures the emotion, joy, and authentic moments 
+                of your special day.
+            </p>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-collection" id="weddingGallery">
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-number">01</div>
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=800&fit=crop" 
+                             alt="Wedding Photography 1" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Sarah & Michael</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">02</div>
+                        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&h=800&fit=crop" 
+                             alt="Wedding Photography 2" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Emma & James</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">03</div>
+                        <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&h=800&fit=crop" 
+                             alt="Wedding Photography 3" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Olivia & David</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">04</div>
+                        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&h=800&fit=crop" 
+                             alt="Wedding Photography 4" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Isabella & Ryan</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="collection-footer">
+                    <div class="collection-nav">
+                        <button class="collection-nav-btn" data-gallery="weddingGallery" data-direction="prev" aria-label="Previous">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="collection-nav-btn" data-gallery="weddingGallery" data-direction="next" aria-label="Next">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Photography Section -->
+    <section id="event" class="section" style="background: var(--paper-50); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">Service 03</div>
+            <h2 class="display-2 mb-6">EVENT PHOTOGRAPHY</h2>
+            <p class="subhead mb-12 text-secondary" style="max-width: 700px;">
+                Professional coverage for corporate events, conferences, galas, 
+                and special occasions.
+            </p>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-collection" id="eventGallery">
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-number">01</div>
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=800&fit=crop" 
+                             alt="Event Photography 1" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Tech Conference 2026</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">02</div>
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=800&fit=crop" 
+                             alt="Event Photography 2" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Corporate Gala</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">03</div>
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop" 
+                             alt="Event Photography 3" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Fashion Show</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">04</div>
+                        <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600&h=800&fit=crop" 
+                             alt="Event Photography 4" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Product Launch</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="collection-footer">
+                    <div class="collection-nav">
+                        <button class="collection-nav-btn" data-gallery="eventGallery" data-direction="prev" aria-label="Previous">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="collection-nav-btn" data-gallery="eventGallery" data-direction="next" aria-label="Next">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portrait Photography Section -->
+    <section id="portrait" class="section" style="background: var(--surface-muted); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">Service 04</div>
+            <h2 class="display-2 mb-6">PORTRAIT PHOTOGRAPHY</h2>
+            <p class="subhead mb-12 text-secondary" style="max-width: 700px;">
+                Contemporary portraiture that reveals personality, character, 
+                and authentic presence.
+            </p>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-collection" id="portraitGallery">
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-number">01</div>
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop" 
+                             alt="Portrait Photography 1" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Leslie Alexander</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">02</div>
+                        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop" 
+                             alt="Portrait Photography 2" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Kathryn Murphy</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">03</div>
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop" 
+                             alt="Portrait Photography 3" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Dianne Russell</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-number">04</div>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop" 
+                             alt="Portrait Photography 4" class="gallery-image">
+                        <div class="gallery-caption">
+                            <div class="gallery-title">Eleanor Pena</div>
+                            <div class="gallery-meta">2/5/2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="collection-footer">
+                    <div class="collection-nav">
+                        <button class="collection-nav-btn" data-gallery="portraitGallery" data-direction="prev" aria-label="Previous">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="collection-nav-btn" data-gallery="portraitGallery" data-direction="next" aria-label="Next">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages section for header navigation -->
+    <section id="packages" class="section" style="background: var(--ink-950); color: var(--text-inverted); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps mb-4" style="color: var(--ash-400);">Pricing</div>
+            <h2 class="display-2 mb-6" style="color: white;">PACKAGES</h2>
+            <p class="subhead mb-12" style="color: var(--ash-300); max-width: 700px;">
+                Choose the perfect package for your photography needs. All packages include 
+                professional editing and high-resolution image delivery.
+            </p>
+            
+            <div class="grid grid-3" style="gap: var(--space-6);">
+                <!-- Starter Package -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="label-caps" style="color: var(--ash-400);">Starter</div>
+                        <div class="package-price">
+                            <span class="package-price-amount">$499</span>
+                            <span class="package-price-period">/ session</span>
+                        </div>
+                    </div>
+                    <div class="package-divider"></div>
+                    <ul class="package-features">
+                        <li>2 hours coverage</li>
+                        <li>1 location</li>
+                        <li>30 edited images</li>
+                        <li>Online gallery</li>
+                        <li>High-resolution files</li>
+                        <li>2 week delivery</li>
+                    </ul>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: var(--space-6);">Select Package</button>
+                </div>
+                
+                <!-- Professional Package -->
+                <div class="package-card package-featured">
+                    <div class="package-badge">Most Popular</div>
+                    <div class="package-header">
+                        <div class="label-caps" style="color: var(--ash-400);">Professional</div>
+                        <div class="package-price">
+                            <span class="package-price-amount">$999</span>
+                            <span class="package-price-period">/ session</span>
+                        </div>
+                    </div>
+                    <div class="package-divider"></div>
+                    <ul class="package-features">
+                        <li>4 hours coverage</li>
+                        <li>2 locations</li>
+                        <li>80 edited images</li>
+                        <li>Online gallery</li>
+                        <li>High-resolution files</li>
+                        <li>1 week delivery</li>
+                        <li>Print release</li>
+                        <li>Style consultation</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-6);">Select Package</button>
+                </div>
+                
+                <!-- Premium Package -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="label-caps" style="color: var(--ash-400);">Premium</div>
+                        <div class="package-price">
+                            <span class="package-price-amount">$1,999</span>
+                            <span class="package-price-period">/ session</span>
+                        </div>
+                    </div>
+                    <div class="package-divider"></div>
+                    <ul class="package-features">
+                        <li>8 hours coverage</li>
+                        <li>Unlimited locations</li>
+                        <li>150+ edited images</li>
+                        <li>Online gallery</li>
+                        <li>High-resolution files</li>
+                        <li>3 day delivery</li>
+                        <li>Print release</li>
+                        <li>Style consultation</li>
+                        <li>Second photographer</li>
+                        <li>Premium album</li>
+                    </ul>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: var(--space-6);">Select Package</button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: var(--space-12);">
+                <p class="body" style="color: var(--ash-300); margin-bottom: var(--space-4);">
+                    Need a custom package? We're happy to create a tailored solution for your specific needs.
+                </p>
+                <a href="#contact" class="btn btn-ghost" style="color: white;">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section" style="padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">About</div>
+            <h2 class="display-2 mb-6">WHO WE ARE</h2>
+            <div class="grid grid-2" style="gap: var(--space-9);">
+                <div>
+                    <p class="subhead mb-6">
+                        We are a collective of photographers, visual storytellers, and creative 
+                        professionals dedicated to crafting exceptional imagery.
+                    </p>
+                    <p class="body text-secondary mb-6">
+                        Founded in 2014, our studio has grown from a solo photographer's vision into 
+                        a full-service photography house. We've worked with leading brands, publications, 
+                        and individuals across fashion, commercial, and editorial projects worldwide.
+                    </p>
+                    <div class="grid grid-3" style="gap: var(--space-6); margin-top: var(--space-9);">
+                        <div class="stat-block">
+                            <div class="stat-value">12+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-value">500+</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-value">25</div>
+                            <div class="stat-label">Awards</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="width: 100%; height: 500px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section" style="background: var(--surface-muted); padding: var(--space-15) 0;">
+        <div class="container">
+            <div class="label-caps text-secondary mb-4">Get in Touch</div>
+            <h2 class="display-2 mb-6">LET'S TALK</h2>
+            <div class="grid grid-2" style="gap: var(--space-9);">
+                <div>
+                    <p class="subhead mb-6">
+                        Ready to start your next project? We'd love to hear from you.
+                    </p>
+                    <p class="body text-secondary mb-9">
+                        Whether you're planning a wedding, launching a product, or need editorial imagery, 
+                        we're here to bring your vision to life. Reach out to discuss your project.
+                    </p>
+                    <div class="mb-6">
+                        <div class="label-caps text-secondary mb-2">Email</div>
+                        <p class="body">hello@photono.studio</p>
+                    </div>
+                    <div class="mb-6">
+                        <div class="label-caps text-secondary mb-2">Phone</div>
+                        <p class="body">+1 (555) 123-4567</p>
+                    </div>
+                    <div>
+                        <div class="label-caps text-secondary mb-2">Location</div>
+                        <p class="body">Paris, France</p>
+                    </div>
+                </div>
+                <!-- Contact form sends to obzrve@gmail.com via Web3Forms. Get your free key at https://web3forms.com (use obzrve@gmail.com) and set CONTACT_ACCESS_KEY in the script below. -->
+                <form class="form" id="contact-form">
+                    <input type="hidden" name="access_key" id="contact-access-key" value="">
+                    <div class="field">
+                        <label class="field-label" for="contact-name">Name</label>
+                        <input type="text" id="contact-name" name="name" class="text-input" placeholder="Your name" required>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="contact-email">Email</label>
+                        <input type="email" id="contact-email" name="email" class="text-input" placeholder="your@email.com" required>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="contact-service">Service</label>
+                        <select id="contact-service" name="service" class="select">
+                            <option value="">Select a service</option>
+                            <option value="Product Photography">Product Photography</option>
+                            <option value="Wedding Photography">Wedding Photography</option>
+                            <option value="Event Photography">Event Photography</option>
+                            <option value="Portrait Photography">Portrait Photography</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" class="textarea" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    <div class="field" id="contact-form-status" style="display: none;"></div>
+                    <button type="submit" class="btn btn-primary btn-lg" id="contact-submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-heading">About</div>
+                    <a href="#" class="footer-link">Our Story</a>
+                    <a href="#" class="footer-link">Team</a>
+                    <a href="#" class="footer-link">Careers</a>
+                    <a href="#" class="footer-link">Press</a>
+                </div>
+                
+                <div>
+                    <div class="footer-heading">Services</div>
+                    <a href="#" class="footer-link">Editorial</a>
+                    <a href="#" class="footer-link">Portraits</a>
+                    <a href="#" class="footer-link">Commercial</a>
+                    <a href="#" class="footer-link">Consulting</a>
+                </div>
+                
+                <div>
+                    <div class="footer-heading">Resources</div>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Case Studies</a>
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="gallery.html" class="footer-link">Online Gallery</a>
+                </div>
+                
+                <div>
+                    <div class="footer-heading">Contact</div>
+                    <a href="#" class="footer-link">hello@studio.com</a>
+                    <a href="#" class="footer-link">+1 (555) 123-4567</a>
+                    <a href="#" class="footer-link">Paris, France</a>
+                    <div style="margin-top: 24px;">
+                        <div class="language-switcher">
+                            <a href="#" class="language-link active">EN</a>
+                            <a href="#" class="language-link">FR</a>
+                            <a href="#" class="language-link">DE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider" style="background: var(--ash-600);"></div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <p class="body-small" style="color: var(--ash-400);">
+                    © 2026 Studio. All rights reserved.
+                </p>
+                <div class="component-row">
+                    <button class="social-icon-btn" style="background: transparent; border-color: var(--ash-600);" aria-label="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </button>
+                    <button class="social-icon-btn" style="background: transparent; border-color: var(--ash-600);" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </button>
+                    <button class="social-icon-btn" style="background: transparent; border-color: var(--ash-600);" aria-label="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox (click any portfolio image to open) -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            
+            <img src="" alt="Full size photo" class="lightbox-image" id="lightboxImage">
+            
+            <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+            
+            <div class="lightbox-caption" aria-live="polite">
+                <div class="lightbox-title" id="lightboxTitle"></div>
+                <div class="lightbox-meta" id="lightboxMeta"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <script>
+        // Hero Carousel functionality
+        const heroImages = [
+            'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1600&h=1200&fit=crop',
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1600&h=1200&fit=crop',
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&h=1200&fit=crop',
+            'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=1600&h=1200&fit=crop'
+        ];
+        
+        let currentHeroIndex = 0;
+        const heroBackground = document.querySelector('.hero-background');
+        const heroProgress = document.getElementById('heroProgress');
+        const heroPrevBtn = document.getElementById('heroPrev');
+        const heroNextBtn = document.getElementById('heroNext');
+        
+        function updateHeroImage(index) {
+            heroBackground.style.opacity = '0';
+            
+            setTimeout(() => {
+                heroBackground.src = heroImages[index];
+                heroBackground.style.opacity = '0.85';
+                
+                // Update progress bar
+                const progressPercent = ((index + 1) / heroImages.length) * 100;
+                heroProgress.style.width = progressPercent + '%';
+            }, 300);
+        }
+        
+        function nextHeroImage() {
+            currentHeroIndex = (currentHeroIndex + 1) % heroImages.length;
+            updateHeroImage(currentHeroIndex);
+        }
+        
+        function prevHeroImage() {
+            currentHeroIndex = (currentHeroIndex - 1 + heroImages.length) % heroImages.length;
+            updateHeroImage(currentHeroIndex);
+        }
+        
+        heroNextBtn.addEventListener('click', nextHeroImage);
+        heroPrevBtn.addEventListener('click', prevHeroImage);
+        
+        // Initialize progress bar
+        heroProgress.style.width = '25%';
+        
+        // Gallery navigation functionality
+        const galleries = {
+            productGallery: {
+                currentPage: 0,
+                itemsPerPage: 4,
+                images: [
+                    // Page 1
+                    ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=800&fit=crop', 'Luxury Watch Collection', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=800&fit=crop', 'Designer Sunglasses', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop', 'Premium Headphones', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?w=600&h=800&fit=crop', 'Cosmetics Line', '2/5/2025'],
+                    // Page 2
+                    ['https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&h=800&fit=crop', 'Smart Watch', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=600&h=800&fit=crop', 'Luxury Bag', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=600&h=800&fit=crop', 'Designer Shoes', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&h=800&fit=crop', 'Perfume Collection', '2/5/2025']
+                ]
+            },
+            weddingGallery: {
+                currentPage: 0,
+                itemsPerPage: 4,
+                images: [
+                    ['https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=800&fit=crop', 'Sarah & Michael', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&h=800&fit=crop', 'Emma & James', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&h=800&fit=crop', 'Olivia & David', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&h=800&fit=crop', 'Isabella & Ryan', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&h=800&fit=crop', 'Sophie & Alex', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&h=800&fit=crop', 'Grace & Thomas', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&h=800&fit=crop', 'Lucy & Jack', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1525258430084-c42e4c7a1d94?w=600&h=800&fit=crop', 'Mia & Daniel', '2/5/2025']
+                ]
+            },
+            eventGallery: {
+                currentPage: 0,
+                itemsPerPage: 4,
+                images: [
+                    ['https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=800&fit=crop', 'Tech Conference 2026', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=800&fit=crop', 'Corporate Gala', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop', 'Fashion Show', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600&h=800&fit=crop', 'Product Launch', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&h=800&fit=crop', 'Award Ceremony', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=800&fit=crop', 'Business Summit', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=800&fit=crop', 'Networking Event', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=600&h=800&fit=crop', 'Trade Show', '2/5/2025']
+                ]
+            },
+            portraitGallery: {
+                currentPage: 0,
+                itemsPerPage: 4,
+                images: [
+                    ['https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop', 'Leslie Alexander', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop', 'Kathryn Murphy', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop', 'Dianne Russell', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop', 'Eleanor Pena', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop', 'Courtney Henry', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop', 'Jenny Wilson', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop', 'Kristin Watson', '2/5/2025'],
+                    ['https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=800&fit=crop', 'Savannah Nguyen', '2/5/2025']
+                ]
+            }
+        };
+        
+        function updateGallery(galleryId) {
+            const gallery = galleries[galleryId];
+            const galleryElement = document.getElementById(galleryId);
+            const items = galleryElement.querySelectorAll('.gallery-item');
+            
+            const startIndex = gallery.currentPage * gallery.itemsPerPage;
+            const endIndex = startIndex + gallery.itemsPerPage;
+            const currentImages = gallery.images.slice(startIndex, endIndex);
+            
+            items.forEach((item, index) => {
+                if (currentImages[index]) {
+                    const img = item.querySelector('.gallery-image');
+                    const title = item.querySelector('.gallery-title');
+                    const meta = item.querySelector('.gallery-meta');
+                    const number = item.querySelector('.gallery-number');
+                    
+                    img.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        img.src = currentImages[index][0];
+                        title.textContent = currentImages[index][1];
+                        meta.textContent = currentImages[index][2];
+                        number.textContent = String(startIndex + index + 1).padStart(2, '0');
+                        img.style.opacity = '1';
+                    }, 200);
+                }
+            });
+        }
+        
+        document.querySelectorAll('.collection-nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const galleryId = this.getAttribute('data-gallery');
+                const direction = this.getAttribute('data-direction');
+                const gallery = galleries[galleryId];
+                const totalPages = Math.ceil(gallery.images.length / gallery.itemsPerPage);
+                
+                if (direction === 'next') {
+                    gallery.currentPage = (gallery.currentPage + 1) % totalPages;
+                } else {
+                    gallery.currentPage = (gallery.currentPage - 1 + totalPages) % totalPages;
+                }
+                
+                updateGallery(galleryId);
+            });
+        });
+        
+        // ----------------------------------------
+        // Scroll-to-element helpers (supports hash-on-load)
+        // ----------------------------------------
+        function getScrollOffsetPx() {
+            // Offset only if header is fixed/sticky (future-proofing)
+            const header = document.querySelector('.header');
+            if (!header) return 12;
+            
+            const pos = window.getComputedStyle(header).position;
+            const isOverlayHeader = pos === 'fixed' || pos === 'sticky';
+            const headerH = header.getBoundingClientRect().height || 0;
+            
+            return (isOverlayHeader ? headerH : 0) + 12;
+        }
+        
+        function scrollToElement(el, { behavior = 'smooth', updateHash = null } = {}) {
+            if (!el) return false;
+            
+            const offset = getScrollOffsetPx();
+            const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+            window.scrollTo({ top: Math.max(0, y), behavior });
+            
+            if (typeof updateHash === 'string' && updateHash.startsWith('#')) {
+                // Avoid default anchor "jump" while still reflecting state in the URL
+                history.pushState(null, '', updateHash);
+            }
+            
+            return true;
+        }
+        
+        function scrollToHash(hash, { behavior = 'smooth' } = {}) {
+            if (!hash || hash === '#' || !hash.startsWith('#')) return false;
+            const el = document.querySelector(hash);
+            return scrollToElement(el, { behavior, updateHash: null });
+        }
+        
+        // Smooth scroll navigation for hero links
+        document.querySelectorAll('.hero-nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    scrollToElement(targetSection, { behavior: 'smooth', updateHash: targetId });
+                    
+                    // Update active state
+                    document.querySelectorAll('.hero-nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // Mobile menu toggle functionality
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mobileNav');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            nav.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+        
+        // Close mobile menu when clicking nav links and add smooth scroll
+        document.querySelectorAll('.nav-link, .smooth-scroll').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const nav = document.getElementById('mobileNav');
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                
+                // Close mobile menu if open
+                if (nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    toggle.classList.remove('active');
+                }
+                
+                // Smooth scroll if it's an anchor link
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#') && href.length > 1) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(href);
+                    
+                    if (targetSection) {
+                        scrollToElement(targetSection, { behavior: 'smooth', updateHash: href });
+                    }
+                }
+            });
+        });
+        
+        // Close mobile menu on window resize to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const nav = document.getElementById('mobileNav');
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                
+                nav.classList.remove('active');
+                toggle.classList.remove('active');
+            }
+        });
+        
+        // Back to Top button functionality
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // ----------------------------------------
+        // Lightbox (portfolio images)
+        // ----------------------------------------
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxMeta = document.getElementById('lightboxMeta');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        
+        let lightboxItems = [];
+        let lightboxIndex = 0;
+        let previousBodyOverflow = '';
+        
+        function getLargeImageUrl(url) {
+            try {
+                const u = new URL(url);
+                if (u.hostname.includes('images.unsplash.com')) {
+                    u.searchParams.set('w', '1800');
+                    u.searchParams.set('q', '90');
+                    u.searchParams.set('auto', 'format');
+                    // Preserve portrait feel if height is specified; otherwise let it be natural
+                    if (u.searchParams.has('h')) u.searchParams.set('h', '2200');
+                    if (!u.searchParams.has('fit')) u.searchParams.set('fit', 'crop');
+                }
+                return u.toString();
+            } catch {
+                return url;
+            }
+        }
+        
+        function buildLightboxItems() {
+            // Collect the currently-visible portfolio images across all service sections
+            const items = Array.from(document.querySelectorAll('.gallery-collection .gallery-item')).map((item) => {
+                const img = item.querySelector('.gallery-image');
+                const titleEl = item.querySelector('.gallery-title');
+                const metaEl = item.querySelector('.gallery-meta');
+                
+                return {
+                    item,
+                    img,
+                    src: img?.getAttribute('src') || '',
+                    alt: img?.getAttribute('alt') || 'Photo',
+                    title: titleEl?.textContent?.trim() || '',
+                    meta: metaEl?.textContent?.trim() || ''
+                };
+            }).filter(i => i.img && i.src);
+            
+            lightboxItems = items;
+        }
+        
+        function renderLightbox(index) {
+            if (!lightboxItems.length) return;
+            
+            // Wrap-around navigation
+            lightboxIndex = (index + lightboxItems.length) % lightboxItems.length;
+            const it = lightboxItems[lightboxIndex];
+            
+            lightboxImage.src = getLargeImageUrl(it.src);
+            lightboxImage.alt = it.alt || 'Photo';
+            lightboxTitle.textContent = it.title;
+            lightboxMeta.textContent = it.meta;
+            
+            // Hide caption area when there is nothing to show
+            const hasCaption = Boolean(it.title || it.meta);
+            lightboxTitle.style.display = it.title ? '' : 'none';
+            lightboxMeta.style.display = it.meta ? '' : 'none';
+            lightboxTitle.parentElement.style.display = hasCaption ? '' : 'none';
+        }
+        
+        function openLightboxAt(index) {
+            buildLightboxItems();
+            if (!lightboxItems.length) return;
+            
+            previousBodyOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            
+            lightbox.classList.add('active');
+            renderLightbox(index);
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lightboxImage.src = '';
+            document.body.style.overflow = previousBodyOverflow;
+        }
+        
+        function nextLightbox() {
+            // If the grid paginates/swaps images, refresh items so next/prev stays correct
+            buildLightboxItems();
+            renderLightbox(lightboxIndex + 1);
+        }
+        
+        function prevLightbox() {
+            buildLightboxItems();
+            renderLightbox(lightboxIndex - 1);
+        }
+        
+        // Open when clicking any portfolio image/card (but not the collection nav buttons)
+        document.addEventListener('click', (e) => {
+            const navBtn = e.target.closest?.('.collection-nav-btn');
+            if (navBtn) return;
+            
+            const galleryItem = e.target.closest?.('.gallery-collection .gallery-item');
+            if (!galleryItem) return;
+            
+            const img = galleryItem.querySelector('.gallery-image');
+            if (!img) return;
+            
+            buildLightboxItems();
+            const idx = lightboxItems.findIndex(i => i.item === galleryItem);
+            if (idx >= 0) {
+                e.preventDefault();
+                openLightboxAt(idx);
+            }
+        });
+        
+        // Controls
+        lightboxClose?.addEventListener('click', closeLightbox);
+        lightboxNext?.addEventListener('click', nextLightbox);
+        lightboxPrev?.addEventListener('click', prevLightbox);
+        
+        // Close when clicking outside the content
+        lightbox?.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox?.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextLightbox();
+            if (e.key === 'ArrowLeft') prevLightbox();
+        });
+        
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // Smooth scroll to top when clicked
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // If this page is opened with a hash (e.g. index.html#contact), scroll after layout paints
+        if (window.location.hash && window.location.hash.length > 1) {
+            requestAnimationFrame(() => {
+                // use 'auto' so it doesn't feel like an unexpected animation on first load
+                scrollToHash(window.location.hash, { behavior: 'auto' });
+            });
+        }
+        
+        // Support manual hash changes (or back/forward navigation)
+        window.addEventListener('hashchange', () => {
+            scrollToHash(window.location.hash, { behavior: 'smooth' });
+        });
+
+        // Contact form: sends to obzrve@gmail.com via Web3Forms (get your free key at https://web3forms.com)
+        (function() {
+            var CONTACT_ACCESS_KEY = '14c66beb-f527-4d37-8bb1-6b965af34545';
+            var form = document.getElementById('contact-form');
+            var statusEl = document.getElementById('contact-form-status');
+            var submitBtn = document.getElementById('contact-submit-btn');
+            if (!form) return;
+            var keyEl = document.getElementById('contact-access-key');
+            if (keyEl) keyEl.value = CONTACT_ACCESS_KEY;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!CONTACT_ACCESS_KEY || CONTACT_ACCESS_KEY === '14c66beb-f527-4d37-8bb1-6b965af34545Y') {
+                    statusEl.style.display = 'block';
+                    statusEl.innerHTML = '<span class="field-error">Setup: Get a free key at <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> for obzrve@gmail.com and replace YOUR_WEB3FORMS_ACCESS_KEY in this file.</span>';
+                    return;
+                }
+                submitBtn.disabled = true;
+                statusEl.style.display = 'block';
+                statusEl.className = 'field';
+                statusEl.innerHTML = 'Sending…';
+                var body = new FormData(form);
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: body
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        statusEl.innerHTML = '<span style="color: var(--success, green);">Message sent. We\'ll get back to you soon.</span>';
+                        form.reset();
+                    } else {
+                        statusEl.innerHTML = '<span class="field-error">Something went wrong. Please try again or email us directly.</span>';
+                    }
+                })
+                .catch(function() {
+                    statusEl.innerHTML = '<span class="field-error">Network error. Please try again later.</span>';
+                })
+                .finally(function() {
+                    submitBtn.disabled = false;
+                });
+            });
+        })();
+        
+    </script>
+</body>
+</html>
