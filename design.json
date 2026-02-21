@@ -1,0 +1,914 @@
+{
+  "schema": "design-system.v1",
+  "version": "1.0.0",
+  "project": {
+    "name": "Photography Site",
+    "goal": "High-contrast editorial / fashion-photography portfolio UI with bold condensed typography, oversized headlines, large imagery, and minimal UI chrome.",
+    "primary_reference_notes": [
+      "Oversized condensed uppercase headings (editorial / poster-like).",
+      "High contrast palette (near-black + white) with restrained grays.",
+      "Minimal borders: thin rules and hairline underlines; lots of whitespace.",
+      "Layouts often split: text block + large image; asymmetry feels intentional.",
+      "Buttons are pill/rounded capsules; forms use underline inputs (no boxes).",
+      "Navigation is sparse and understated; content/photography is the hero."
+    ]
+  },
+  "design_principles": {
+    "visual_language": [
+      "Editorial minimalism: the grid is strict, the type is loud, the UI is quiet.",
+      "Photography-first hierarchy: images get scale; text supports and frames.",
+      "Brutalist restraint: avoid decorative gradients/shadows; use rules and spacing.",
+      "High-contrast readability: black/white first, gray as a utility, accent sparingly.",
+      "Intentional imbalance: asymmetry is allowed when anchored to a strong grid."
+    ],
+    "do": [
+      "Use big, condensed, all-caps headings and short phrases.",
+      "Keep components visually simple; rely on spacing, alignment, and type weight.",
+      "Use hairline dividers and underline inputs to maintain a magazine layout feel.",
+      "Prefer large paddings and generous negative space over boxes and borders."
+    ],
+    "dont": [
+      "Don’t add skeuomorphic shadows, heavy cards, or colorful gradients.",
+      "Don’t mix many font families; keep to a display condensed + neutral sans pairing.",
+      "Don’t overuse accents; avoid bright UI colors that compete with photography.",
+      "Don’t add too many rounded corners; reserve roundness for CTAs only."
+    ]
+  },
+  "foundations": {
+    "layout": {
+      "container": {
+        "max_width_px": 1240,
+        "gutters_px": {
+          "mobile": 20,
+          "tablet": 28,
+          "desktop": 40
+        }
+      },
+      "grid": {
+        "columns": {
+          "mobile": 4,
+          "tablet": 8,
+          "desktop": 12
+        },
+        "column_gap_px": {
+          "mobile": 16,
+          "tablet": 20,
+          "desktop": 24
+        },
+        "row_gap_px": {
+          "mobile": 16,
+          "tablet": 20,
+          "desktop": 24
+        },
+        "baseline_px": 8,
+        "notes": "Use a strict grid for alignment; allow hero sections to break the container with larger imagery, but keep edges aligned to grid lines."
+      },
+      "breakpoints_px": {
+        "xs": 360,
+        "sm": 640,
+        "md": 768,
+        "lg": 1024,
+        "xl": 1280,
+        "2xl": 1440
+      },
+      "section_spacing_px": {
+        "stack": {
+          "mobile": 56,
+          "tablet": 72,
+          "desktop": 96
+        },
+        "hero_top_padding": {
+          "mobile": 56,
+          "tablet": 72,
+          "desktop": 96
+        }
+      }
+    },
+    "color": {
+      "palette": {
+        "ink_950": "#0B0B0C",
+        "ink_900": "#111114",
+        "ink_800": "#1A1B1F",
+        "paper_50": "#FFFFFF",
+        "paper_100": "#F6F6F6",
+        "ash_200": "#E6E6E6",
+        "ash_300": "#D6D6D6",
+        "ash_400": "#B9B9B9",
+        "ash_500": "#8F8F8F",
+        "ash_600": "#6B6B6B",
+        "ash_700": "#4A4A4A",
+        "accent": "#0B0B0C"
+      },
+      "semantic": {
+        "bg": "paper_50",
+        "bg_inverted": "ink_950",
+        "surface": "paper_50",
+        "surface_muted": "paper_100",
+        "text_primary": "ink_950",
+        "text_secondary": "ash_700",
+        "text_tertiary": "ash_600",
+        "text_inverted": "paper_50",
+        "border": "ash_200",
+        "border_strong": "ash_400",
+        "divider": "ash_200",
+        "focus_ring": "ink_950",
+        "link": "ink_950",
+        "link_hover": "ink_950",
+        "button_primary_bg": "ink_950",
+        "button_primary_text": "paper_50",
+        "button_secondary_bg": "paper_50",
+        "button_secondary_text": "ink_950",
+        "button_secondary_border": "ink_950",
+        "field_underline": "ash_400",
+        "field_placeholder": "ash_500",
+        "danger": "#B42318",
+        "success": "#067647",
+        "warning": "#B54708",
+        "info": "#175CD3"
+      },
+      "usage_notes": [
+        "Default UI is light (white background). Use inverted (near-black) for footer / strong sections.",
+        "Use gray sparingly; it’s primarily for dividers, placeholders, and secondary text.",
+        "Avoid bright accents; if an accent is needed, use ink (black) or very muted tone."
+      ]
+    },
+    "typography": {
+      "font_families": {
+        "display_condensed": {
+          "preferred": "A tall, condensed grotesk/industrial display face (e.g., 'Bebas Neue', 'Anton', 'Oswald', or similar).",
+          "fallback_stack": "Impact, Haettenschweiler, 'Arial Narrow Bold', 'Segoe UI', Arial, sans-serif"
+        },
+        "text_neutral": {
+          "preferred": "A clean neo-grotesk for body/UI (e.g., 'Inter', 'Helvetica Neue', 'SF Pro', or similar).",
+          "fallback_stack": "'Segoe UI', Roboto, Arial, sans-serif"
+        },
+        "mono_optional": {
+          "preferred": "Optional for code/metadata only.",
+          "fallback_stack": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+        }
+      },
+      "scale": {
+        "display_1": {
+          "font_family": "display_condensed",
+          "font_size_px": 96,
+          "line_height": 0.9,
+          "letter_spacing_em": -0.02,
+          "font_weight": 700,
+          "transform": "uppercase",
+          "notes": "Hero headline: extremely large, condensed, minimal leading."
+        },
+        "display_2": {
+          "font_family": "display_condensed",
+          "font_size_px": 72,
+          "line_height": 0.92,
+          "letter_spacing_em": -0.02,
+          "font_weight": 700,
+          "transform": "uppercase"
+        },
+        "display_3": {
+          "font_family": "display_condensed",
+          "font_size_px": 56,
+          "line_height": 0.95,
+          "letter_spacing_em": -0.015,
+          "font_weight": 700,
+          "transform": "uppercase"
+        },
+        "headline": {
+          "font_family": "text_neutral",
+          "font_size_px": 28,
+          "line_height": 1.15,
+          "letter_spacing_em": -0.01,
+          "font_weight": 600,
+          "transform": "none"
+        },
+        "subhead": {
+          "font_family": "text_neutral",
+          "font_size_px": 18,
+          "line_height": 1.35,
+          "letter_spacing_em": 0.0,
+          "font_weight": 500,
+          "transform": "none"
+        },
+        "body": {
+          "font_family": "text_neutral",
+          "font_size_px": 16,
+          "line_height": 1.55,
+          "letter_spacing_em": 0.0,
+          "font_weight": 400,
+          "transform": "none"
+        },
+        "body_small": {
+          "font_family": "text_neutral",
+          "font_size_px": 14,
+          "line_height": 1.55,
+          "letter_spacing_em": 0.0,
+          "font_weight": 400
+        },
+        "label_caps": {
+          "font_family": "text_neutral",
+          "font_size_px": 12,
+          "line_height": 1.2,
+          "letter_spacing_em": 0.08,
+          "font_weight": 600,
+          "transform": "uppercase",
+          "notes": "Used for small UI labels, section eyebrow text, and metadata."
+        }
+      },
+      "text_treatments": {
+        "all_caps_display": {
+          "transform": "uppercase",
+          "letter_spacing_em": 0.02
+        },
+        "editorial_kicker": {
+          "transform": "uppercase",
+          "letter_spacing_em": 0.12,
+          "font_weight": 600
+        },
+        "muted_metadata": {
+          "font_size_px": 12,
+          "line_height": 1.3,
+          "color": "text_secondary"
+        }
+      }
+    },
+    "spacing": {
+      "scale_px": {
+        "0": 0,
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "4": 16,
+        "5": 20,
+        "6": 24,
+        "7": 32,
+        "8": 40,
+        "9": 48,
+        "10": 56,
+        "11": 64,
+        "12": 72,
+        "13": 80,
+        "14": 96,
+        "15": 120
+      },
+      "usage_notes": [
+        "Primary rhythm is 8px; section spacing uses large steps (56–96px).",
+        "Use whitespace as the main 'decoration'—avoid adding containers unless needed for readability."
+      ]
+    },
+    "radii": {
+      "none": 0,
+      "sm": 6,
+      "md": 10,
+      "pill": 999
+    },
+    "borders": {
+      "hairline_px": 1,
+      "strong_px": 2,
+      "style": "solid",
+      "notes": "Use hairlines for dividers and form underlines. Use strong borders sparingly (e.g., outlined buttons)."
+    },
+    "shadows": {
+      "use": "minimal",
+      "tokens": {
+        "none": "none",
+        "soft": "0 6px 24px rgba(0,0,0,0.08)"
+      },
+      "notes": "Shadows should be rare; this style reads flatter and more print-like."
+    },
+    "motion": {
+      "durations_ms": {
+        "fast": 120,
+        "base": 180,
+        "slow": 260
+      },
+      "easing": {
+        "standard": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "exit": "cubic-bezier(0.4, 0, 1, 1)"
+      },
+      "interaction_notes": [
+        "Hover states are subtle: underline reveals, opacity shifts, 2–4px translate, or image scale 1.02.",
+        "Avoid bouncy/springy motion; keep it editorial and controlled."
+      ]
+    },
+    "imagery": {
+      "philosophy": [
+        "Large, crisp images with minimal overlays.",
+        "Prefer edge-to-edge crops in hero and gallery; keep captions small and aligned."
+      ],
+      "aspect_ratios": {
+        "portrait": "3:4",
+        "landscape": "4:3",
+        "wide": "16:9",
+        "square": "1:1"
+      },
+      "treatments": {
+        "default": {
+          "border_radius": "none",
+          "overlay": "none",
+          "filter": "none"
+        },
+        "hover": {
+          "transform": "scale(1.02)",
+          "transition_duration_ms": 180,
+          "transition_easing": "standard"
+        }
+      }
+    },
+    "iconography": {
+      "style": "Simple, geometric, single-weight icons. Social icons can be inside small circular containers.",
+      "stroke_weight": "1.5–2px",
+      "sizes_px": [16, 20, 24, 28]
+    },
+    "copy_voice": {
+      "tone": "Confident, succinct, premium.",
+      "rules": [
+        "Short headlines; avoid long marketing paragraphs.",
+        "Prefer uppercase for primary statements and section titles.",
+        "Use verbs and outcomes: 'Let’s talk', 'Send message', 'Complete service'."
+      ]
+    }
+  },
+  "composition_patterns": {
+    "hero_split": {
+      "intent": "A bold editorial headline block paired with a dominant image on the right.",
+      "layout": {
+        "desktop": "Two columns: left (text/form) ~55%, right (image) ~45% with generous internal padding.",
+        "mobile": "Stacked: image first or last; headline remains oversized but wraps."
+      },
+      "spacing": {
+        "headline_to_subhead_px": 16,
+        "subhead_to_body_px": 16,
+        "block_to_block_px": 24
+      }
+    },
+    "editorial_section": {
+      "intent": "Sparse section with a large headline and a short supporting paragraph or list.",
+      "rules": [
+        "Use a single dominant typographic element per section (headline OR list).",
+        "Align to grid edges; use hairline rules to separate sections."
+      ]
+    },
+    "gallery_grid": {
+      "intent": "Portfolio collection layout with numbered items and minimal captions.",
+      "layout_rules": [
+        "Use consistent gutters; allow mixed image sizes but keep baseline alignment for captions.",
+        "Numbering (01/02/03) is small and light; name/title is bolder; date is muted."
+      ],
+      "hover": "Image scales subtly; caption underline reveals; keep interaction minimal."
+    },
+    "inverted_footer": {
+      "intent": "Strong black footer with minimal navigation, contact blocks, language selector, and social icons.",
+      "layout_rules": [
+        "Use generous vertical padding; keep text light (white/gray) and aligned in columns.",
+        "Logo/brand can be stacked, large, and left-aligned."
+      ]
+    }
+  },
+  "components": {
+    "AppShell": {
+      "description": "Overall page scaffold: background, container widths, consistent section spacing, and grid alignment.",
+      "structure": {
+        "areas": ["Header", "Main", "Footer"],
+        "background": "bg",
+        "content_max_width": "layout.container.max_width_px"
+      },
+      "spacing": {
+        "page_padding": {
+          "mobile_px": 20,
+          "desktop_px": 40
+        }
+      }
+    },
+    "Header": {
+      "description": "Minimal top navigation with small links; brand is present but not overly decorative.",
+      "layout": {
+        "height_px": {
+          "mobile": 64,
+          "desktop": 80
+        },
+        "alignment": "Brand left; nav centered/right; keep breathing room above hero."
+      },
+      "typography": {
+        "nav_links": "label_caps"
+      },
+      "interaction": {
+        "link_hover": "Underline or subtle opacity; no heavy backgrounds."
+      }
+    },
+    "NavLink": {
+      "description": "Primary navigation link.",
+      "states": {
+        "default": {
+          "color": "text_inverted (on dark) OR text_primary (on light)",
+          "decoration": "none"
+        },
+        "hover": {
+          "decoration": "underline",
+          "underline_thickness_px": 1
+        },
+        "active": {
+          "decoration": "underline",
+          "weight": 600
+        },
+        "focus": {
+          "outline": "2px solid focus_ring",
+          "outline_offset_px": 2
+        }
+      }
+    },
+    "Hero": {
+      "description": "Large editorial headline plus supporting kicker/copy and optional CTA; can be split with imagery.",
+      "typography": {
+        "kicker": "label_caps",
+        "headline": "display_1",
+        "supporting": "subhead"
+      },
+      "layout": {
+        "pattern": "composition_patterns.hero_split",
+        "image": {
+          "radius": "none",
+          "edge_alignment": "Align image edges to grid lines; allow larger-than-container feel on desktop if desired."
+        }
+      }
+    },
+    "SectionHeading": {
+      "description": "Large section title, often oversized, uppercase, condensed.",
+      "typography": {
+        "default": "display_3"
+      },
+      "spacing": {
+        "below_px": 24
+      }
+    },
+    "Paragraph": {
+      "description": "Body copy used sparingly; keep columns narrow for readability.",
+      "typography": "body",
+      "layout": {
+        "max_line_length_chars": 70,
+        "preferred_line_length_chars": 55
+      }
+    },
+    "Divider": {
+      "description": "Hairline rule used to separate editorial blocks and form rows.",
+      "style": {
+        "height_px": 1,
+        "color": "divider",
+        "margin_y_px": 24
+      }
+    },
+    "Button": {
+      "description": "Primary CTA is a dark pill button with white text; secondary may be outlined.",
+      "anatomy": ["Label", "Optional icon (arrow)"],
+      "sizes": {
+        "md": {
+          "height_px": 44,
+          "padding_x_px": 22,
+          "radius": "pill",
+          "typography": "label_caps"
+        },
+        "lg": {
+          "height_px": 52,
+          "padding_x_px": 28,
+          "radius": "pill",
+          "typography": "label_caps"
+        }
+      },
+      "variants": {
+        "primary": {
+          "bg": "button_primary_bg",
+          "text": "button_primary_text",
+          "border": "none"
+        },
+        "secondary": {
+          "bg": "button_secondary_bg",
+          "text": "button_secondary_text",
+          "border": "2px solid button_secondary_border"
+        },
+        "ghost": {
+          "bg": "transparent",
+          "text": "text_primary",
+          "border": "none"
+        }
+      },
+      "states": {
+        "hover": {
+          "transform": "translateY(-1px)",
+          "opacity": 0.95
+        },
+        "pressed": {
+          "transform": "translateY(0px)",
+          "opacity": 0.9
+        },
+        "disabled": {
+          "opacity": 0.5,
+          "cursor": "not-allowed"
+        },
+        "focus": {
+          "ring": "2px solid focus_ring"
+        }
+      }
+    },
+    "TextLink": {
+      "description": "Inline or standalone text link; uses underline on hover; often paired with a small arrow.",
+      "typography": "label_caps",
+      "states": {
+        "default": {
+          "color": "link",
+          "decoration": "none"
+        },
+        "hover": {
+          "decoration": "underline"
+        }
+      }
+    },
+    "Form": {
+      "description": "Contact forms are minimalist: underline inputs, large spacing, few labels, clear placeholders.",
+      "layout": {
+        "field_stack_gap_px": 18,
+        "max_width_px": 560
+      },
+      "validation": {
+        "tone": "Minimal, not loud. Use small text; avoid colored boxes.",
+        "error_text_style": "body_small",
+        "error_color": "danger"
+      }
+    },
+    "FieldLabel": {
+      "description": "Optional; the design often relies on placeholder/aria-label. If used, keep small and uppercase.",
+      "typography": "label_caps",
+      "color": "text_secondary",
+      "spacing": {
+        "below_px": 8
+      }
+    },
+    "TextInput": {
+      "description": "Single-line input with underline style; no box border; flush to grid.",
+      "style": {
+        "bg": "transparent",
+        "text_color": "text_primary",
+        "placeholder_color": "field_placeholder",
+        "underline": {
+          "height_px": 1,
+          "color": "field_underline"
+        },
+        "padding_y_px": 12,
+        "padding_x_px": 0
+      },
+      "states": {
+        "focus": {
+          "underline_color": "text_primary",
+          "underline_height_px": 2
+        },
+        "error": {
+          "underline_color": "danger"
+        },
+        "disabled": {
+          "opacity": 0.6
+        }
+      },
+      "accessibility": {
+        "requirements": [
+          "Visible focus indicator (underline thickens + optional ring).",
+          "Use proper label or aria-label; placeholder alone is not a label."
+        ]
+      }
+    },
+    "Textarea": {
+      "description": "Multi-line input matching TextInput underline style; generous height.",
+      "style": {
+        "min_height_px": 120,
+        "resize": "vertical",
+        "underline": "Same as TextInput"
+      }
+    },
+    "Select": {
+      "description": "Underline select; avoid heavy dropdown styling.",
+      "style": {
+        "underline": "Same as TextInput",
+        "icon": "Simple chevron, 16–20px"
+      }
+    },
+    "Checkbox": {
+      "description": "Minimal checkbox; rarely used in this aesthetic.",
+      "style": {
+        "size_px": 16,
+        "border_px": 1,
+        "border_color": "border_strong",
+        "radius": "sm",
+        "checked_bg": "ink_950"
+      }
+    },
+    "Radio": {
+      "description": "Minimal radio; rarely used.",
+      "style": {
+        "size_px": 16,
+        "border_px": 1,
+        "border_color": "border_strong",
+        "checked_dot_color": "ink_950"
+      }
+    },
+    "Switch": {
+      "description": "If needed (e.g., theme toggle), keep flat and monochrome.",
+      "style": {
+        "track_height_px": 20,
+        "track_width_px": 36,
+        "thumb_size_px": 16,
+        "bg_off": "ash_300",
+        "bg_on": "ink_950"
+      }
+    },
+    "Card": {
+      "description": "Use sparingly; prefer flat layouts. When used, cards are borderless or hairline-bordered.",
+      "variants": {
+        "flat": {
+          "bg": "transparent",
+          "border": "none"
+        },
+        "hairline": {
+          "bg": "surface",
+          "border": "1px solid border",
+          "radius": "none"
+        }
+      },
+      "spacing": {
+        "padding_px": 24
+      }
+    },
+    "ImageCard": {
+      "description": "Portfolio item: image + number + name + date/metadata.",
+      "anatomy": ["Index number", "Image", "Title (name)", "Meta (date)"],
+      "typography": {
+        "index": "label_caps",
+        "title": "label_caps",
+        "meta": "muted_metadata"
+      },
+      "layout": {
+        "image_radius": "none",
+        "caption_alignment": "Left aligned; keep tight vertical spacing under image."
+      },
+      "interaction": {
+        "hover": "Image scales 1.02; caption underline reveals; cursor pointer."
+      }
+    },
+    "GalleryGrid": {
+      "description": "Grid of portfolio items; can mix sizes but maintain consistent gutters.",
+      "layout": {
+        "columns": {
+          "mobile": 1,
+          "tablet": 2,
+          "desktop": 3
+        },
+        "gap_px": {
+          "mobile": 20,
+          "desktop": 24
+        }
+      }
+    },
+    "Carousel": {
+      "description": "Minimal arrow navigation; no heavy pagination dots unless absolutely needed.",
+      "controls": {
+        "arrow_buttons": {
+          "style": "ghost",
+          "icon_size_px": 20,
+          "hit_target_px": 44
+        }
+      }
+    },
+    "Badge": {
+      "description": "Minimal label/tag, uppercase, small; often border-only.",
+      "style": {
+        "typography": "label_caps",
+        "padding_x_px": 10,
+        "padding_y_px": 6,
+        "border": "1px solid border_strong",
+        "radius": "pill",
+        "bg": "transparent"
+      }
+    },
+    "List": {
+      "description": "For services/features: use large bold headings with tiny supporting copy, arranged in columns.",
+      "style": {
+        "item_title": "display_3 (or headline)",
+        "item_body": "body_small",
+        "spacing_between_items_px": 24
+      }
+    },
+    "Table": {
+      "description": "If used, keep it editorial: hairline rules, no zebra stripes, left aligned.",
+      "style": {
+        "borders": "hairline",
+        "header_typography": "label_caps",
+        "cell_typography": "body_small"
+      }
+    },
+    "Modal": {
+      "description": "Minimal modal with strong typography; no heavy rounding or shadows.",
+      "style": {
+        "overlay": "rgba(11,11,12,0.6)",
+        "surface_bg": "paper_50",
+        "radius": "none",
+        "shadow": "soft"
+      }
+    },
+    "Drawer": {
+      "description": "For mobile navigation or filters; keep monochrome and typographic.",
+      "style": {
+        "bg": "paper_50",
+        "divider": "hairline"
+      }
+    },
+    "Toast": {
+      "description": "Small, restrained notifications; avoid bright colors.",
+      "style": {
+        "bg": "ink_950",
+        "text": "paper_50",
+        "radius": "md",
+        "shadow": "soft"
+      }
+    },
+    "Tooltip": {
+      "description": "Simple tooltip; short text; high contrast.",
+      "style": {
+        "bg": "ink_950",
+        "text": "paper_50",
+        "radius": "sm",
+        "padding_px": 10
+      }
+    },
+    "Pagination": {
+      "description": "Minimal arrows and small labels; aligns with gallery/collection navigation.",
+      "style": {
+        "typography": "label_caps",
+        "controls": "ghost buttons with icons"
+      }
+    },
+    "Breadcrumb": {
+      "description": "Small uppercase breadcrumb; use muted gray and separators.",
+      "style": {
+        "typography": "label_caps",
+        "color": "text_secondary",
+        "separator": "/"
+      }
+    },
+    "LanguageSwitcher": {
+      "description": "Footer language list: simple text links, spaced evenly; active language is brighter.",
+      "style": {
+        "typography": "label_caps",
+        "color_default": "ash_400 (on dark)",
+        "color_active": "paper_50 (on dark)"
+      }
+    },
+    "SocialIconButton": {
+      "description": "Circular icon buttons, often stacked vertically; monochrome.",
+      "style": {
+        "size_px": 44,
+        "radius": "pill",
+        "bg": "paper_50 (or transparent on light)",
+        "icon_color": "ink_950",
+        "border": "none (or hairline on light)"
+      },
+      "interaction": {
+        "hover": "opacity 0.9; subtle translateY(-1px)"
+      }
+    },
+    "Tabs": {
+      "description": "Minimal tabs (rare). Use uppercase labels; no pill backgrounds; rely on underline + weight.",
+      "style": {
+        "typography": "label_caps",
+        "divider": "hairline",
+        "active_indicator": {
+          "type": "underline",
+          "height_px": 2,
+          "color": "text_primary"
+        }
+      },
+      "states": {
+        "inactive": {
+          "color": "text_secondary"
+        },
+        "active": {
+          "color": "text_primary",
+          "weight": 700
+        },
+        "hover": {
+          "color": "text_primary",
+          "decoration": "underline"
+        }
+      }
+    },
+    "Accordion": {
+      "description": "Editorial accordion: full-width rows separated by hairlines; large question/title, small supporting content.",
+      "style": {
+        "row_padding_y_px": 18,
+        "divider": "1px solid divider",
+        "title_typography": "subhead",
+        "content_typography": "body_small",
+        "icon": "Simple plus/minus, 16–20px"
+      },
+      "interaction": {
+        "open_close": "Fast, controlled height transition; no bounce."
+      }
+    },
+    "Lightbox": {
+      "description": "Full-screen image viewer for portfolio. Keep UI minimal and let the photo dominate.",
+      "style": {
+        "overlay": "rgba(11,11,12,0.92)",
+        "controls": {
+          "type": "ghost",
+          "color": "paper_50",
+          "hit_target_px": 44
+        },
+        "caption": {
+          "typography": "body_small",
+          "color": "ash_300",
+          "max_width_px": 640
+        }
+      },
+      "interaction": {
+        "navigation": "Arrow keys + swipe; fade transitions."
+      },
+      "accessibility": {
+        "requirements": [
+          "Trap focus while open; restore focus on close.",
+          "Escape closes.",
+          "Buttons have aria-labels (Next, Previous, Close)."
+        ]
+      }
+    },
+    "VideoEmbed": {
+      "description": "If video is used (reels/behind-the-scenes), keep player chrome minimal and monochrome.",
+      "style": {
+        "ratio": "16:9 (default)",
+        "controls": "Native controls preferred; avoid custom colorful skins.",
+        "caption": "body_small"
+      }
+    },
+    "StatBlock": {
+      "description": "Small metric + label (e.g., years, shoots). Use strong type and lots of spacing; no boxes.",
+      "style": {
+        "value_typography": "display_3",
+        "label_typography": "label_caps",
+        "alignment": "left",
+        "gap_px": 8
+      }
+    },
+    "Loader": {
+      "description": "Minimal loading indicator: thin spinner or simple linear progress; monochrome only.",
+      "style": {
+        "spinner_size_px": 20,
+        "stroke_px": 2,
+        "color": "text_primary",
+        "bg": "transparent"
+      }
+    },
+    "Skeleton": {
+      "description": "Subtle skeletons for images and text: muted gray blocks, no shimmer or very subtle shimmer.",
+      "style": {
+        "bg": "ash_200",
+        "radius": "none",
+        "animation": "optional subtle shimmer, 1.4s linear"
+      }
+    },
+    "EmptyState": {
+      "description": "Editorial empty state: a strong headline + short guidance + a single CTA.",
+      "style": {
+        "headline_typography": "display_3",
+        "body_typography": "body_small",
+        "cta": "Button.primary"
+      }
+    },
+    "ErrorState": {
+      "description": "Minimal error state: calm message, recovery action, and optional error code in small muted text.",
+      "style": {
+        "headline_typography": "headline",
+        "body_typography": "body_small",
+        "meta_typography": "muted_metadata",
+        "cta": "Button.secondary"
+      }
+    },
+    "Footer": {
+      "description": "Inverted, spacious, multi-column footer with brand block, contact, location, language, and copyright.",
+      "style": {
+        "bg": "bg_inverted",
+        "text": "text_inverted",
+        "muted_text": "ash_400",
+        "dividers": "rare; use spacing more than rules"
+      },
+      "layout": {
+        "columns_desktop": 4,
+        "padding_y_px": 96
+      }
+    },
+    "AccessibilityGuidelines": {
+      "description": "Guardrails to keep the minimal style usable.",
+      "rules": [
+        "Minimum contrast ratio for body text: 4.5:1 (prefer higher).",
+        "Interactive hit targets: at least 44x44px for touch.",
+        "Always provide a visible focus state (underline thickening is OK but must be obvious).",
+        "Don’t rely on placeholder text as the only label; use labels or aria-label.",
+        "Avoid text overlay on busy photos unless there is a solid/blurred scrim."
+      ]
+    }
+  }
+}
+

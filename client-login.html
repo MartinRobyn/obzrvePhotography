@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Gallery — Photono</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-950: #0B0B0C;
+            --ink-900: #111114;
+            --paper-50: #FFFFFF;
+            --paper-100: #F6F6F6;
+            --ash-200: #E6E6E6;
+            --ash-400: #B9B9B9;
+            --ash-500: #8F8F8F;
+            --ash-700: #4A4A4A;
+            --text-primary: var(--ink-950);
+            --text-secondary: var(--ash-700);
+            --border: var(--ash-200);
+            --field-underline: var(--ash-400);
+            --field-placeholder: var(--ash-500);
+            --danger: #B42318;
+            --font-display: 'Anton', Impact, sans-serif;
+            --font-text: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 40px;
+            --space-10: 56px;
+            --space-12: 72px;
+            --duration-base: 180ms;
+            --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-text);
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--text-primary);
+            background: var(--paper-100);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-6);
+        }
+        .login-card {
+            background: var(--paper-50);
+            max-width: 420px;
+            width: 100%;
+            padding: var(--space-12);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+        }
+        .login-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+        }
+        .login-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-8);
+        }
+        .form-group {
+            margin-bottom: var(--space-6);
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-4);
+        }
+        .form-group input {
+            width: 100%;
+            font-family: var(--font-text);
+            font-size: 16px;
+            padding: var(--space-4) 0;
+            border: none;
+            border-bottom: 2px solid var(--field-underline);
+            background: transparent;
+            color: var(--text-primary);
+            transition: border-color var(--duration-base) var(--easing-standard);
+        }
+        .form-group input::placeholder {
+            color: var(--field-placeholder);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-bottom-color: var(--ink-950);
+        }
+        .btn-primary {
+            width: 100%;
+            font-family: var(--font-text);
+            font-size: 16px;
+            font-weight: 600;
+            padding: var(--space-5) var(--space-6);
+            background: var(--ink-950);
+            color: var(--paper-50);
+            border: none;
+            cursor: pointer;
+            margin-top: var(--space-6);
+            transition: background var(--duration-base) var(--easing-standard);
+        }
+        .btn-primary:hover {
+            background: var(--ink-900);
+        }
+        .error-msg {
+            font-size: 14px;
+            color: var(--danger);
+            margin-bottom: var(--space-6);
+            padding: var(--space-4);
+            background: rgba(180, 35, 24, 0.08);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: var(--space-8);
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover { color: var(--ink-950); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1 class="login-title">Client gallery</h1>
+        <p class="login-subtitle">Enter your client ID and access code to view your photos.</p>
+
+        <div id="error-box" class="error-msg" style="display: none;" role="alert"></div>
+
+        <form action="login.php" method="POST">
+            <div class="form-group">
+                <label for="client_id">Client ID</label>
+                <input type="text" id="client_id" name="client_id" required autocomplete="username" placeholder="e.g. smith">
+            </div>
+            <div class="form-group">
+                <label for="access_code">Access code</label>
+                <input type="password" id="access_code" name="access_code" required autocomplete="current-password" placeholder="Your code">
+            </div>
+            <button type="submit" class="btn-primary">Enter gallery</button>
+        </form>
+
+        <a href="index.html" class="back-link">← Back to Photono</a>
+    </div>
+
+    <script>
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var err = params.get('error');
+            var box = document.getElementById('error-box');
+            if (err === 'missing') {
+                box.textContent = 'Please enter both client ID and access code.';
+                box.style.display = 'block';
+            } else if (err === 'invalid') {
+                box.textContent = 'Invalid client ID or access code. Please try again.';
+                box.style.display = 'block';
+            }
+        })();
+    </script>
+</body>
+</html>

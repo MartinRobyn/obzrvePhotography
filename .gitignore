@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Client gallery — keep credentials and uploads out of repo
+private/config.php
+private/uploads/*
+!private/uploads/.gitkeep
+
+# Optional: uncomment if you add build tools later
+# node_modules/
+# .env
+# *.log
