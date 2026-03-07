@@ -165,6 +165,9 @@
             } else if (err === 'invalid') {
                 box.textContent = 'Invalid client ID or access code. Please try again.';
                 box.style.display = 'block';
+            } else if (err === 'config') {
+                box.textContent = 'Gallery is temporarily unavailable (database connection error). Please contact the photographer.';
+                box.style.display = 'block';
             }
         })();
     </script>
