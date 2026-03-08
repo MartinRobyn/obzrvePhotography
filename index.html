@@ -763,6 +763,7 @@
         .hero-split {
             position: relative;
             min-height: 100vh;
+            min-height: 100svh;
             display: flex;
             background: var(--ink-950);
             overflow: hidden;
@@ -778,6 +779,9 @@
             object-position: center;
             opacity: 0.85;
             transition: opacity 300ms ease-in-out;
+            -webkit-user-drag: none;
+            user-select: none;
+            touch-action: pan-y pinch-zoom;
         }
         
         .hero-overlay {
@@ -2044,11 +2048,17 @@
             /* Hero responsive */
             .hero-split {
                 min-height: 100vh;
+                min-height: 100svh;
+            }
+            
+            .hero-background {
+                object-position: center top;
             }
             
             .hero-content {
                 flex-direction: column;
                 padding-top: 64px;
+                justify-content: flex-end;
             }
             
             .hero-sidebar {
@@ -2059,6 +2069,7 @@
                 gap: var(--space-4);
                 justify-content: space-between;
                 align-items: flex-start;
+                order: 2;
             }
             
             .hero-nav {
@@ -2084,9 +2095,19 @@
                 margin-top: var(--space-4);
             }
             
+            .hero-carousel-btn {
+                width: 48px;
+                height: 48px;
+            }
+            
             .hero-main {
                 padding: var(--space-8) var(--space-5);
                 text-align: center;
+                order: 1;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
             }
             
             .hero-headline {
@@ -2101,6 +2122,16 @@
                 margin-left: auto;
                 margin-right: auto;
                 font-size: 10px;
+            }
+            
+            .hero-overlay {
+                background: linear-gradient(
+                    180deg,
+                    rgba(11,11,12,0.45) 0%,
+                    rgba(11,11,12,0.15) 40%,
+                    rgba(11,11,12,0.50) 80%,
+                    rgba(11,11,12,0.75) 100%
+                );
             }
             
             /* Typography scaling */
@@ -2398,12 +2429,17 @@
         
         /* Small mobile (max-width: 480px) */
         @media (max-width: 480px) {
+            .hero-split {
+                min-height: 100vh;
+                min-height: 100svh;
+            }
+            
             .hero-headline {
                 font-size: 36px;
             }
             
             .hero-nav-link {
-                font-size: 16px;
+                font-size: 14px;
             }
             
             .hero-main {
@@ -2412,6 +2448,11 @@
             
             .hero-sidebar {
                 padding: var(--space-4) var(--space-4);
+            }
+            
+            .hero-carousel-btn {
+                width: 44px;
+                height: 44px;
             }
             
             /* Gallery small mobile */
@@ -3010,7 +3051,44 @@
         
         heroNextBtn.addEventListener('click', nextHeroImage);
         heroPrevBtn.addEventListener('click', prevHeroImage);
-        
+
+        // Touch / swipe support for hero carousel
+        (function() {
+            var heroSection = document.querySelector('.hero-split');
+            var touchStartX = 0;
+            var touchStartY = 0;
+            var touchEndX = 0;
+            var touchEndY = 0;
+            var isSwiping = false;
+
+            heroSection.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+                isSwiping = true;
+            }, { passive: true });
+
+            heroSection.addEventListener('touchmove', function(e) {
+                if (!isSwiping) return;
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            heroSection.addEventListener('touchend', function() {
+                if (!isSwiping) return;
+                isSwiping = false;
+                var diffX = touchStartX - touchEndX;
+                var diffY = touchStartY - touchEndY;
+                // Only trigger if horizontal swipe is dominant and exceeds threshold
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX > 0) {
+                        nextHeroImage();   // swipe left → next
+                    } else {
+                        prevHeroImage();   // swipe right → prev
+                    }
+                }
+            }, { passive: true });
+        })();
+
         // Initialize progress bar
         heroProgress.style.width = '25%';
         
