@@ -30,5 +30,11 @@ $mime = $mimes[$ext] ?? 'application/octet-stream';
 
 header('Content-Type: ' . $mime);
 header('Content-Length: ' . filesize($path));
+
+// If ?download=1, force browser to download instead of display
+if (!empty($_GET['download'])) {
+    header('Content-Disposition: attachment; filename="' . $file . '"');
+}
+
 readfile($path);
 exit;
